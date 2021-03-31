@@ -3,28 +3,34 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		1C7C9F306A26340CE87D8FAA /* Pods_Ass2_Instagram.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B53ED5587825F0495048D19 /* Pods_Ass2_Instagram.framework */; };
 		2DAFA2CC26120475006F2822 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAFA2CB26120475006F2822 /* AppDelegate.swift */; };
 		2DAFA2CE26120475006F2822 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAFA2CD26120475006F2822 /* SceneDelegate.swift */; };
-		2DAFA2D026120475006F2822 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAFA2CF26120475006F2822 /* ViewController.swift */; };
-		2DAFA2D326120475006F2822 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2DAFA2D126120475006F2822 /* Main.storyboard */; };
+		2DAFA2D026120475006F2822 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAFA2CF26120475006F2822 /* TabBarController.swift */; };
 		2DAFA2D526120478006F2822 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2DAFA2D426120478006F2822 /* Assets.xcassets */; };
-		2DAFA2D826120478006F2822 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2DAFA2D626120478006F2822 /* LaunchScreen.storyboard */; };
+		2DAFA2F02614342A006F2822 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAFA2EF2614342A006F2822 /* HomeVC.swift */; };
+		2DAFA2F32614343A006F2822 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAFA2F22614343A006F2822 /* SearchVC.swift */; };
+		2DAFA2F62614344B006F2822 /* VideoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAFA2F52614344B006F2822 /* VideoVC.swift */; };
+		2DAFA2F92614345F006F2822 /* NoticeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAFA2F82614345F006F2822 /* NoticeVC.swift */; };
+		2DAFA2FC2614346D006F2822 /* UserVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAFA2FB2614346D006F2822 /* UserVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2DAFA2C826120475006F2822 /* Ass2-Instagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ass2-Instagram.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DAFA2CB26120475006F2822 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2DAFA2CD26120475006F2822 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		2DAFA2CF26120475006F2822 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		2DAFA2D226120475006F2822 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		2DAFA2CF26120475006F2822 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		2DAFA2D426120478006F2822 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		2DAFA2D726120478006F2822 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2DAFA2D926120478006F2822 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2DAFA2EF2614342A006F2822 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
+		2DAFA2F22614343A006F2822 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
+		2DAFA2F52614344B006F2822 /* VideoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoVC.swift; sourceTree = "<group>"; };
+		2DAFA2F82614345F006F2822 /* NoticeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeVC.swift; sourceTree = "<group>"; };
+		2DAFA2FB2614346D006F2822 /* UserVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserVC.swift; sourceTree = "<group>"; };
 		66F8E9F4FFB2FAF340E36E89 /* Pods-Ass2-Instagram.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ass2-Instagram.debug.xcconfig"; path = "Target Support Files/Pods-Ass2-Instagram/Pods-Ass2-Instagram.debug.xcconfig"; sourceTree = "<group>"; };
 		8B53ED5587825F0495048D19 /* Pods_Ass2_Instagram.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ass2_Instagram.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7049EEE4C58807428EAD1A1 /* Pods-Ass2-Instagram.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ass2-Instagram.release.xcconfig"; path = "Target Support Files/Pods-Ass2-Instagram/Pods-Ass2-Instagram.release.xcconfig"; sourceTree = "<group>"; };
@@ -65,10 +71,13 @@
 			children = (
 				2DAFA2CB26120475006F2822 /* AppDelegate.swift */,
 				2DAFA2CD26120475006F2822 /* SceneDelegate.swift */,
-				2DAFA2CF26120475006F2822 /* ViewController.swift */,
-				2DAFA2D126120475006F2822 /* Main.storyboard */,
+				2DAFA2CF26120475006F2822 /* TabBarController.swift */,
+				2DAFA2F22614343A006F2822 /* SearchVC.swift */,
+				2DAFA2F82614345F006F2822 /* NoticeVC.swift */,
+				2DAFA2FB2614346D006F2822 /* UserVC.swift */,
+				2DAFA2F52614344B006F2822 /* VideoVC.swift */,
+				2DAFA2EF2614342A006F2822 /* HomeVC.swift */,
 				2DAFA2D426120478006F2822 /* Assets.xcassets */,
-				2DAFA2D626120478006F2822 /* LaunchScreen.storyboard */,
 				2DAFA2D926120478006F2822 /* Info.plist */,
 			);
 			path = "Ass2-Instagram";
@@ -80,7 +89,6 @@
 				66F8E9F4FFB2FAF340E36E89 /* Pods-Ass2-Instagram.debug.xcconfig */,
 				D7049EEE4C58807428EAD1A1 /* Pods-Ass2-Instagram.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -151,9 +159,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DAFA2D826120478006F2822 /* LaunchScreen.storyboard in Resources */,
 				2DAFA2D526120478006F2822 /* Assets.xcassets in Resources */,
-				2DAFA2D326120475006F2822 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,32 +212,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DAFA2D026120475006F2822 /* ViewController.swift in Sources */,
+				2DAFA2F62614344B006F2822 /* VideoVC.swift in Sources */,
+				2DAFA2D026120475006F2822 /* TabBarController.swift in Sources */,
+				2DAFA2F32614343A006F2822 /* SearchVC.swift in Sources */,
+				2DAFA2F02614342A006F2822 /* HomeVC.swift in Sources */,
 				2DAFA2CC26120475006F2822 /* AppDelegate.swift in Sources */,
 				2DAFA2CE26120475006F2822 /* SceneDelegate.swift in Sources */,
+				2DAFA2F92614345F006F2822 /* NoticeVC.swift in Sources */,
+				2DAFA2FC2614346D006F2822 /* UserVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		2DAFA2D126120475006F2822 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2DAFA2D226120475006F2822 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		2DAFA2D626120478006F2822 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2DAFA2D726120478006F2822 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		2DAFA2DA26120478006F2822 /* Debug */ = {
@@ -285,7 +277,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -340,7 +332,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -359,6 +351,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7X78626T5H;
 				INFOPLIST_FILE = "Ass2-Instagram/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -379,6 +372,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7X78626T5H;
 				INFOPLIST_FILE = "Ass2-Instagram/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
