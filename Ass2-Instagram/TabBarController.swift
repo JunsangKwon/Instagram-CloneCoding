@@ -16,13 +16,13 @@ class TabBarController: UITabBarController {
     }
     
     func setTabBar() {
-        let homeVC = HomeVC()
+        let homeNVC = UINavigationController(rootViewController: HomeVC())
         let searchVC = SearchVC()
         let videoVC = VideoVC()
         let noticeVC = NoticeVC()
         let userVC = UserVC()
       
-        self.setViewControllers([homeVC,searchVC, videoVC, noticeVC, userVC], animated: false)
+        self.setViewControllers([homeNVC,searchVC, videoVC, noticeVC, userVC], animated: false)
         
         guard let items = self.tabBar.items else { return }
         
