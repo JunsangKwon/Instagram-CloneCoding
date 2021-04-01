@@ -19,7 +19,7 @@ class HomeVC: UIViewController {
         
         tableView.register(HomeFeedTableViewCell.self, forCellReuseIdentifier: "HomeFeedTableViewCell")
         setConstraint()
-        
+        tableView.rowHeight = UITableView.automaticDimension
     }
     
     private func setNavBar() {
