@@ -14,30 +14,52 @@ class HomeVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setNavBar()
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        tableView.register(HomeFeedTableViewCell.self, forCellReuseIdentifier: "HomeFeedTableViewCell")
+        setTableView()
         setConstraint()
-        tableView.rowHeight = UITableView.automaticDimension
     }
     
     private func setNavBar() {
         // LeftButton 설정
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "InstagramLogo.png"), style: .plain, target: self, action: nil)
         
-        // Container가 될 Array를 생성
-        var rightBarButtons: [UIBarButtonItem] = []
+        // RightBtnView 설정
+        setRightBtnView()
+    }
+    
+    private func setRightBtnView() {
+        // UIView 하나 생성
+        let rightView = UIView()
+        rightView.frame = CGRect(x: 0, y: 0, width: 75, height: 37)
         
-        // Array에 버튼 아이템을 추가
-        let dmButton = UIBarButtonItem(image: UIImage(named: "Messanger.png"), style: .plain, target: self, action: nil)
-        let uploadButton = UIBarButtonItem(image: UIImage(named: "Add.png"), style: .plain, target: self, action: nil)
+        // Upload Button 생성
+        let uploadButton = UIButton(type: .system)
+        uploadButton.setImage(UIImage(named: "Add.png"), for: .normal)
         uploadButton.tintColor = .black
-        rightBarButtons.append(dmButton)
-        rightBarButtons.append(uploadButton)
-
-        // rightBarButtonItems 배열을 셋업
-        self.navigationItem.rightBarButtonItems = rightBarButtons
+        
+        // DM Button 생성
+        let dmButton = UIButton(type: .system)
+        dmButton.setImage(UIImage(named: "Messanger.png"), for: .normal)
+        
+        // UIView에 요소들 추가
+        rightView.addSubview(uploadButton)
+        rightView.addSubview(dmButton)
+        
+        // Constraints 생성
+        uploadButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
+        
+        dmButton.snp.makeConstraints { make in
+            make.leading.equalTo(uploadButton.snp.trailing).offset(25.5)
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview()
+        }
+        
+        // UIView를 오른쪽 customView에 연결
+        let rightItem = UIBarButtonItem(customView: rightView)
+        self.navigationItem.rightBarButtonItem = rightItem
+        
     }
     
     // tableView 생성
@@ -45,6 +67,14 @@ class HomeVC: UIViewController {
         let tableview = UITableView()
         return tableview
     }()
+    
+    private func setTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        tableView.register(HomeFeedTableViewCell.self, forCellReuseIdentifier: "HomeFeedTableViewCell")
+        tableView.rowHeight = UITableView.automaticDimension
+    }
     
     private func setConstraint() {
         self.view.addSubview(tableView)
