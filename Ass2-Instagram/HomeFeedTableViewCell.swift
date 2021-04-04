@@ -50,6 +50,19 @@ class HomeFeedTableViewCell: UITableViewCell {
         return view
     }()
     
+    // descriptionView 생성 : FooterView 하위 뷰 (더보기버튼 관련 뷰)
+    private var descriptionView: UIView = {
+        let view = UIView()
+        view.frame = CGRect(x: 0, y: 0, width: 347, height: 40)
+        return view
+    }()
+    
+    // commentView 생성 : FooterView 하위 뷰 (댓글 창 관련 뷰)
+    private var commentView: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
     // HeaderView : profileImg 생성
     private let profileImg: UIImageView = {
         let imgView = UIImageView()
@@ -97,6 +110,103 @@ class HomeFeedTableViewCell: UITableViewCell {
         return label
     }()
     
+    // FooterView : likeBtn 생성
+    private let likeBtn: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "Heart.png"), for: .normal)
+        button.tintColor = UIColor.black
+        return button
+    }()
+    
+    // FooterView : commentBtn 생성
+    private let commentBtn: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "Comment.png"), for: .normal)
+        button.tintColor = UIColor.black
+        return button
+    }()
+    
+    // FooterView : toStoryBtn 생성
+    private let toStoryBtn: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "Messanger.png"), for: .normal)
+        button.tintColor = UIColor.black
+        return button
+    }()
+    
+    // FooterView : saveBtn 생성
+    private let saveBtn: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "Save.png"), for: .normal)
+        button.tintColor = UIColor.black
+        return button
+    }()
+    
+    // FooterView : likeUserImg 생성
+    private let likeUserImg2: UIImageView = {
+        let imgView = UIImageView()
+        imgView.image = UIImage(named: "User2.png")
+        return imgView
+    }()
+    
+    // FooterView : likeInfoLabel 생성
+    private let likeInfoLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Juuunnns_님 외 100명이 좋아합니다"
+        label.textColor = UIColor.black
+        return label
+    }()
+    
+    // FooterView : idLabel2 생성
+    private let idLabel2: UILabel = {
+        let label = UILabel()
+        label.text = "ground_yourssu"
+        label.textColor = UIColor.black
+        return label
+    }()
+    
+    // FooterView : contentLabel 생성, 줄 넘김이 안되는 오류 존재.
+    private let contentLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.text = "인스타그램 클론코딩을 하는중입니다"
+        label.textColor = UIColor.black
+        return label
+    }()
+    
+    // FooterView : moreBtn 생성
+    private let moreBtn: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setTitle("더보기", for: .normal)
+        button.tintColor = UIColor.gray
+        return button
+    }()
+    
+    // FooterView : profileImg2 생성
+    private let profileImg2: UIImageView = {
+        let imgView = UIImageView()
+        imgView.image = UIImage(named: "User.png")
+        return imgView
+    }()
+    
+    // FooterView : commentTextField 생성
+    private let commentTextField: UITextField = {
+        let textfield = UITextField()
+        textfield.placeholder = "댓글 달기..."
+        return textfield
+    }()
+    
+    // FooterView : timeLabel 생성
+    private let timeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "2시간전"
+        label.textColor = UIColor.gray
+        return label
+    }()
+    
+    
+    
     
     
     private func setStructure() {
@@ -117,7 +227,24 @@ class HomeFeedTableViewCell: UITableViewCell {
         rectangleImg.addSubview(pageLabel)
         
         //footerView 구성요소 추가
+        footerView.addSubview(likeBtn)
+        footerView.addSubview(commentBtn)
+        footerView.addSubview(toStoryBtn)
+        footerView.addSubview(saveBtn)
+        footerView.addSubview(likeUserImg2)
+        footerView.addSubview(likeInfoLabel)
+        footerView.addSubview(descriptionView)
+        footerView.addSubview(commentView)
         
+        //descriptionView 구성요소 추가
+        descriptionView.addSubview(idLabel2)
+        descriptionView.addSubview(contentLabel)
+        //descriptionView.addSubview(moreBtn)
+        
+        //commentView 구성요소 추가
+        commentView.addSubview(profileImg2)
+        commentView.addSubview(commentTextField)
+        commentView.addSubview(timeLabel)
         
     }
 
@@ -186,12 +313,99 @@ class HomeFeedTableViewCell: UITableViewCell {
         }
     }
     
-    // SnapKit 사용하여 FooterView 의 AutoLayout (해야함)
+    // SnapKit 사용하여 FooterView 의 AutoLayout
     private func setFooterViewConstraint() {
+        
         footerView.snp.makeConstraints { make in
             make.top.equalTo(imgView.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
-            make.height.equalTo(178)
+            make.height.equalTo(185)
         }
+        
+        likeBtn.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(14)
+            make.leading.equalToSuperview().offset(15)
+        }
+        
+        commentBtn.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(14)
+            make.leading.equalTo(likeBtn.snp.trailing).offset(18)
+        }
+        
+        toStoryBtn.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(14)
+            make.leading.equalTo(commentBtn.snp.trailing).offset(17)
+        }
+        
+        saveBtn.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(14)
+            make.trailing.equalToSuperview().offset(-17)
+        }
+        
+        let maxWidthContainer = 18
+        let maxHeightContainer = 18
+        
+        likeUserImg2.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.top.equalTo(likeBtn.snp.bottom).offset(12)
+            make.height.equalTo(18)
+            make.width.equalTo(likeUserImg2.snp.height).multipliedBy(maxWidthContainer/maxHeightContainer)
+        }
+        
+        likeInfoLabel.snp.makeConstraints { make in
+            make.leading.equalTo(likeUserImg2.snp.trailing).offset(6)
+            make.top.equalTo(likeUserImg2)
+            make.trailing.equalToSuperview().offset(-12)
+        }
+        
+        descriptionView.snp.makeConstraints { make in
+            make.top.equalTo(likeInfoLabel.snp.bottom).offset(5)
+            make.leading.equalToSuperview().offset(14)
+            make.trailing.equalToSuperview().offset(-14)
+            make.height.equalTo(40)
+        }
+        
+        idLabel2.snp.makeConstraints { make in
+            make.top.equalTo(descriptionView).offset(5)
+            make.leading.equalToSuperview()
+        }
+        
+        contentLabel.snp.makeConstraints { make in
+            make.top.equalTo(descriptionView).offset(5)
+            make.leading.equalTo(idLabel2.snp.trailing).offset(5)
+            //make.trailing.equalToSuperview()
+        }
+        
+        moreBtn.snp.makeConstraints { make in
+            // 후에 구현
+        }
+        
+        commentView.snp.makeConstraints { make in
+            make.top.equalTo(descriptionView.snp.bottom)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        let maxWidthContainer2 = 26
+        let maxHeightContainer2 = 26
+        
+        profileImg2.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(8)
+            make.leading.equalToSuperview().offset(14)
+            make.height.equalTo(26)
+            make.width.equalTo(profileImg2.snp.height).multipliedBy(maxWidthContainer2/maxHeightContainer2)
+        }
+        
+        commentTextField.snp.makeConstraints { make in
+            make.leading.equalTo(profileImg2.snp.trailing).offset(10)
+            make.top.equalTo(profileImg2)
+            make.trailing.equalToSuperview().offset(-263)
+        }
+        
+        timeLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(14)
+            make.top.equalTo(profileImg2.snp.bottom).offset(8)
+            make.trailing.equalToSuperview().offset(-321)
+        }
+        
     }
 }
