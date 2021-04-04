@@ -15,7 +15,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setStructure()
         setHeaderViewConstraint()
-        setImgViewConstraint()
+        setScrollViewConstraint()
         setFooterViewConstraint()
     }
     
@@ -37,10 +37,40 @@ class HomeFeedTableViewCell: UITableViewCell {
         return view
     }()
     
-    // ImageView 생성
+    // MainScrollView 생성
+    private var mainScrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.isPagingEnabled = true
+        scrollView.contentSize = CGSize(width: 413, height: 413) // 억지로 맞췄습니다...
+        return scrollView
+    }()
+    
+    // FooterView : pageControl 생성
+    private var pageControl: UIPageControl = {
+        let pageControl = UIPageControl()
+        pageControl.numberOfPages = 2
+        pageControl.addTarget(self, action: #selector(pageControlTapHandler(sender:)), for: .touchUpInside)
+        pageControl.currentPageIndicatorTintColor = UIColor.systemBlue
+        pageControl.pageIndicatorTintColor = UIColor.black
+        return pageControl
+    }()
+    
+    @objc func pageControlTapHandler(sender: UIPageControl) {
+        mainScrollView.setContentOffset(CGPoint(x: 413, y: 0), animated: true)
+    }
+    
+    // MainScrollView : ImgView 생성
     private let imgView: UIImageView = {
         let imgView = UIImageView()
         imgView.image = UIImage(named: "InstaImage.png")
+        return imgView
+    }()
+    
+    // MainScrollView : ImgView2 생성
+    private let imgView2: UIImageView = {
+        let imgView = UIImageView()
+        imgView.image = UIImage(named: "InstaImage2.png")
         return imgView
     }()
 
@@ -213,7 +243,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         
         // 크게 세가지 View로 나누어 contentView에 추가
         contentView.addSubview(headerView)
-        contentView.addSubview(imgView)
+        contentView.addSubview(mainScrollView)
         contentView.addSubview(footerView)
         
         //headerView 구성요소 추가
@@ -222,14 +252,17 @@ class HomeFeedTableViewCell: UITableViewCell {
         headerView.addSubview(localLabel)
         headerView.addSubview(settingBtn)
 
+        mainScrollView.addSubview(imgView)
+        mainScrollView.addSubview(imgView2)
         //imgView 구성요소 추가
-        imgView.addSubview(rectangleImg)
-        rectangleImg.addSubview(pageLabel)
+        //imgView.addSubview(rectangleImg)
+        //rectangleImg.addSubview(pageLabel)
         
         //footerView 구성요소 추가
         footerView.addSubview(likeBtn)
         footerView.addSubview(commentBtn)
         footerView.addSubview(toStoryBtn)
+        footerView.addSubview(pageControl)
         footerView.addSubview(saveBtn)
         footerView.addSubview(likeUserImg2)
         footerView.addSubview(likeInfoLabel)
@@ -285,39 +318,51 @@ class HomeFeedTableViewCell: UITableViewCell {
 
     }
     
-    // SnapKit 사용하여 ImgView 의 AutoLayout
-    private func setImgViewConstraint() {
+    // SnapKit 사용하여 ScrollView 의 AutoLayout
+    private func setScrollViewConstraint() {
         
-        let maxWidthContainer = 375
-        let maxHeightContainer = 375
+        let maxWidthContainer = 413
+        let maxHeightContainer = 413
         
-        imgView.snp.makeConstraints { make in
+        mainScrollView.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(375)
+            make.height.equalTo(413)
+        }
+        
+        imgView.snp.makeConstraints { make in
+            make.top.leading.equalToSuperview()
+            make.height.equalTo(413)
             make.width.equalTo(imgView.snp.height).multipliedBy(maxWidthContainer/maxHeightContainer)
         }
         
-        rectangleImg.snp.makeConstraints { make in
-            make.top.equalTo(headerView.snp.bottom).offset(14)
-            make.trailing.equalToSuperview().offset(-14)
-            make.width.equalTo(34)
-            make.height.equalTo(26)
+        imgView2.snp.makeConstraints { make in
+            make.top.trailing.equalToSuperview()
+            make.leading.equalTo(imgView.snp.trailing)
+            make.height.equalTo(413)
+            make.width.equalTo(imgView2.snp.height).multipliedBy(maxWidthContainer/maxHeightContainer)
         }
         
-        pageLabel.snp.makeConstraints { make in
-            make.top.equalTo(rectangleImg.snp.top).offset(6)
-            make.bottom.equalTo(rectangleImg.snp.bottom).offset(-6)
-            make.leading.equalTo(rectangleImg.snp.leading).offset(8)
-            make.trailing.equalTo(rectangleImg.snp.trailing).offset(-8)
-        }
+//        rectangleImg.snp.makeConstraints { make in
+//            make.top.equalTo(headerView.snp.bottom).offset(14)
+//            make.trailing.equalToSuperview().offset(-14)
+//            make.width.equalTo(34)
+//            make.height.equalTo(26)
+//        }
+//
+//        pageLabel.snp.makeConstraints { make in
+//            make.top.equalTo(rectangleImg.snp.top).offset(6)
+//            make.bottom.equalTo(rectangleImg.snp.bottom).offset(-6)
+//            make.leading.equalTo(rectangleImg.snp.leading).offset(8)
+//            make.trailing.equalTo(rectangleImg.snp.trailing).offset(-8)
+//        }
     }
     
     // SnapKit 사용하여 FooterView 의 AutoLayout
     private func setFooterViewConstraint() {
         
         footerView.snp.makeConstraints { make in
-            make.top.equalTo(imgView.snp.bottom)
+            make.top.equalTo(mainScrollView.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
             make.height.equalTo(185)
         }
@@ -335,6 +380,11 @@ class HomeFeedTableViewCell: UITableViewCell {
         toStoryBtn.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(14)
             make.leading.equalTo(commentBtn.snp.trailing).offset(17)
+        }
+        
+        pageControl.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(14)
+            make.centerX.equalToSuperview()
         }
         
         saveBtn.snp.makeConstraints { make in
