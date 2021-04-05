@@ -43,6 +43,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.isPagingEnabled = true
         scrollView.contentSize = CGSize(width: 413, height: 413) // 억지로 맞췄습니다...
+        scrollView.bounces = false
         return scrollView
     }()
     
@@ -105,6 +106,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         let label = UILabel()
         label.text = "ground_ssu"
         label.textColor = UIColor.black
+        label.font = UIFont.systemFont(ofSize: 15, weight: .medium)
         return label
     }()
     
@@ -113,6 +115,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         let label = UILabel()
         label.text = "SSU, Seoul"
         label.textColor = UIColor.black
+        label.font = UIFont.systemFont(ofSize: 13, weight: .light)
         return label
     }()
     
@@ -182,25 +185,23 @@ class HomeFeedTableViewCell: UITableViewCell {
     // FooterView : likeInfoLabel 생성
     private let likeInfoLabel: UILabel = {
         let label = UILabel()
-        label.text = "Juuunnns_님 외 100명이 좋아합니다"
         label.textColor = UIColor.black
-        return label
-    }()
-    
-    // FooterView : idLabel2 생성
-    private let idLabel2: UILabel = {
-        let label = UILabel()
-        label.text = "ground_yourssu"
-        label.textColor = UIColor.black
+        label.attributedText = NSMutableAttributedString()
+            .medium(string: "Juuunnns_", fontSize: 16)
+            .light(string: "님 외 ", fontSize: 16)
+            .medium(string: "100명", fontSize: 16)
+            .light(string: "이 좋아합니다", fontSize: 16)
         return label
     }()
     
     // FooterView : contentLabel 생성, 줄 넘김이 안되는 오류 존재.
     private let contentLabel: UILabel = {
         let label = UILabel()
-        label.numberOfLines = 0
+        label.numberOfLines = 2
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
-        label.text = "인스타그램 클론코딩을 하는중입니다"
+        label.attributedText = NSMutableAttributedString()
+            .medium(string: "ground_yourssu ", fontSize: 16)
+            .light(string: "인스타그램 클론코딩을 하고 있습니다 블라블라 블라블랍 블라블라", fontSize: 16)
         label.textColor = UIColor.black
         return label
     }()
@@ -270,7 +271,6 @@ class HomeFeedTableViewCell: UITableViewCell {
         footerView.addSubview(commentView)
         
         //descriptionView 구성요소 추가
-        descriptionView.addSubview(idLabel2)
         descriptionView.addSubview(contentLabel)
         //descriptionView.addSubview(moreBtn)
         
@@ -365,6 +365,7 @@ class HomeFeedTableViewCell: UITableViewCell {
             make.top.equalTo(mainScrollView.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
             make.height.equalTo(185)
+            make.bottom.equalToSuperview()
         }
         
         likeBtn.snp.makeConstraints { make in
@@ -415,19 +416,13 @@ class HomeFeedTableViewCell: UITableViewCell {
             make.height.equalTo(40)
         }
         
-        idLabel2.snp.makeConstraints { make in
-            make.top.equalTo(descriptionView).offset(5)
-            make.leading.equalToSuperview()
-        }
-        
         contentLabel.snp.makeConstraints { make in
             make.top.equalTo(descriptionView).offset(5)
-            make.leading.equalTo(idLabel2.snp.trailing).offset(5)
-            //make.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
         }
         
         moreBtn.snp.makeConstraints { make in
-            // 후에 구현
+            // 나중에 구현
         }
         
         commentView.snp.makeConstraints { make in
@@ -457,5 +452,22 @@ class HomeFeedTableViewCell: UITableViewCell {
             make.trailing.equalToSuperview().offset(-321)
         }
         
+    }
+}
+
+extension NSMutableAttributedString {
+
+    func medium(string: String, fontSize: CGFloat) -> NSMutableAttributedString {
+        let font = UIFont.systemFont(ofSize: fontSize, weight: .medium)
+        let attributes: [NSAttributedString.Key: Any] = [.font: font]
+        self.append(NSAttributedString(string: string, attributes: attributes))
+        return self
+    }
+
+    func light(string: String, fontSize: CGFloat) -> NSMutableAttributedString {
+        let font = UIFont.systemFont(ofSize: fontSize, weight: .light)
+        let attributes: [NSAttributedString.Key: Any] = [.font: font]
+        self.append(NSAttributedString(string: string, attributes: attributes))
+        return self
     }
 }

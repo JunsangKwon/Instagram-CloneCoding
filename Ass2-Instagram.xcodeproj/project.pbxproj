@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1C7C9F306A26340CE87D8FAA /* Pods_Ass2_Instagram.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B53ED5587825F0495048D19 /* Pods_Ass2_Instagram.framework */; };
+		2D90F352261AC999002A2A8C /* StoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D90F351261AC999002A2A8C /* StoryCollectionViewCell.swift */; };
 		2DAFA2CC26120475006F2822 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAFA2CB26120475006F2822 /* AppDelegate.swift */; };
 		2DAFA2CE26120475006F2822 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAFA2CD26120475006F2822 /* SceneDelegate.swift */; };
 		2DAFA2D026120475006F2822 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAFA2CF26120475006F2822 /* TabBarController.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2D90F351261AC999002A2A8C /* StoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		2DAFA2C826120475006F2822 /* Ass2-Instagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ass2-Instagram.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DAFA2CB26120475006F2822 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2DAFA2CD26120475006F2822 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 				2DAFA2FB2614346D006F2822 /* UserVC.swift */,
 				2DAFA2F52614344B006F2822 /* VideoVC.swift */,
 				2DAFA2EF2614342A006F2822 /* HomeVC.swift */,
+				2D90F351261AC999002A2A8C /* StoryCollectionViewCell.swift */,
 				2DAFA30426144A1C006F2822 /* HomeFeedTableViewCell.swift */,
 				2DAFA2D426120478006F2822 /* Assets.xcassets */,
 				2DAFA2D926120478006F2822 /* Info.plist */,
@@ -215,6 +218,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D90F352261AC999002A2A8C /* StoryCollectionViewCell.swift in Sources */,
 				2DAFA2F62614344B006F2822 /* VideoVC.swift in Sources */,
 				2DAFA2D026120475006F2822 /* TabBarController.swift in Sources */,
 				2DAFA2F32614343A006F2822 /* SearchVC.swift in Sources */,
