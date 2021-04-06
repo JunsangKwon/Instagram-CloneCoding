@@ -14,8 +14,9 @@ class HomeFeedTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setStructure()
+        setCollectionView()
         setHeaderViewConstraint()
-        setScrollViewConstraint()
+        setCollectionViewConstraint()
         setFooterViewConstraint()
     }
     
@@ -37,44 +38,31 @@ class HomeFeedTableViewCell: UITableViewCell {
         return view
     }()
     
-    // MainScrollView 생성
-    private var mainScrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.showsHorizontalScrollIndicator = false
-        scrollView.isPagingEnabled = true
-        scrollView.contentSize = CGSize(width: 413, height: 413) // 억지로 맞췄습니다...
-        scrollView.bounces = false
-        return scrollView
+    // MainCollectionView 생성
+    private var mainCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 0
+        return cv
     }()
     
+    // 추후에 제대로 설정
     // FooterView : pageControl 생성
     private var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
-        pageControl.numberOfPages = 2
+        pageControl.numberOfPages = 3
         pageControl.addTarget(self, action: #selector(pageControlTapHandler(sender:)), for: .touchUpInside)
         pageControl.currentPageIndicatorTintColor = UIColor.systemBlue
         pageControl.pageIndicatorTintColor = UIColor.black
         return pageControl
     }()
     
+    // 추후에 제대로 설정
     @objc func pageControlTapHandler(sender: UIPageControl) {
-        mainScrollView.setContentOffset(CGPoint(x: 413, y: 0), animated: true)
+        mainCollectionView.setContentOffset(CGPoint(x: 400, y: 0), animated: true)
     }
     
-    // MainScrollView : ImgView 생성
-    private let imgView: UIImageView = {
-        let imgView = UIImageView()
-        imgView.image = UIImage(named: "InstaImage.png")
-        return imgView
-    }()
-    
-    // MainScrollView : ImgView2 생성
-    private let imgView2: UIImageView = {
-        let imgView = UIImageView()
-        imgView.image = UIImage(named: "InstaImage2.png")
-        return imgView
-    }()
-
     // FooterView 생성
     private var footerView: UIView = {
         let view = UIView()
@@ -197,7 +185,7 @@ class HomeFeedTableViewCell: UITableViewCell {
     // FooterView : contentLabel 생성, 줄 넘김이 안되는 오류 존재.
     private let contentLabel: UILabel = {
         let label = UILabel()
-        label.numberOfLines = 2
+        label.numberOfLines = 1
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.attributedText = NSMutableAttributedString()
             .medium(string: "ground_yourssu ", fontSize: 16)
@@ -205,14 +193,17 @@ class HomeFeedTableViewCell: UITableViewCell {
         label.textColor = UIColor.black
         return label
     }()
-    
-    // FooterView : moreBtn 생성
-    private let moreBtn: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setTitle("더보기", for: .normal)
-        button.tintColor = UIColor.gray
-        return button
-    }()
+  
+    // 추후에 설정
+//    // FooterView : moreBtn 생성
+//    private let moreBtn: UIButton = {
+//        let button = UIButton(type: .custom)
+//        button.setTitle("...더보기", for: .normal)
+//        button.setTitleColor(.gray, for: .normal)
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+//        button.addTarget(self, action: #selector(buttonAction(_:)), for: .touchUpInside)
+//        return button
+//    }()
     
     // FooterView : profileImg2 생성
     private let profileImg2: UIImageView = {
@@ -244,7 +235,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         
         // 크게 세가지 View로 나누어 contentView에 추가
         contentView.addSubview(headerView)
-        contentView.addSubview(mainScrollView)
+        contentView.addSubview(mainCollectionView)
         contentView.addSubview(footerView)
         
         //headerView 구성요소 추가
@@ -252,12 +243,6 @@ class HomeFeedTableViewCell: UITableViewCell {
         headerView.addSubview(idLabel)
         headerView.addSubview(localLabel)
         headerView.addSubview(settingBtn)
-
-        mainScrollView.addSubview(imgView)
-        mainScrollView.addSubview(imgView2)
-        //imgView 구성요소 추가
-        //imgView.addSubview(rectangleImg)
-        //rectangleImg.addSubview(pageLabel)
         
         //footerView 구성요소 추가
         footerView.addSubview(likeBtn)
@@ -279,6 +264,17 @@ class HomeFeedTableViewCell: UITableViewCell {
         commentView.addSubview(commentTextField)
         commentView.addSubview(timeLabel)
         
+    }
+    
+    private func setCollectionView() {
+        mainCollectionView.delegate = self
+        mainCollectionView.dataSource = self
+        
+        mainCollectionView.register(PageCollectionViewCell.self, forCellWithReuseIdentifier: "pageCell")
+        mainCollectionView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 400)
+        mainCollectionView.backgroundColor = .white
+        mainCollectionView.showsHorizontalScrollIndicator = false
+        mainCollectionView.isPagingEnabled = true
     }
 
     // SnapKit 사용하여 HeaderView 의 AutoLayout
@@ -318,29 +314,13 @@ class HomeFeedTableViewCell: UITableViewCell {
 
     }
     
-    // SnapKit 사용하여 ScrollView 의 AutoLayout
-    private func setScrollViewConstraint() {
+    // SnapKit 사용하여 CollectionView 의 AutoLayout
+    private func setCollectionViewConstraint() {
         
-        let maxWidthContainer = 413
-        let maxHeightContainer = 413
-        
-        mainScrollView.snp.makeConstraints { make in
+        mainCollectionView.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(413)
-        }
-        
-        imgView.snp.makeConstraints { make in
-            make.top.leading.equalToSuperview()
-            make.height.equalTo(413)
-            make.width.equalTo(imgView.snp.height).multipliedBy(maxWidthContainer/maxHeightContainer)
-        }
-        
-        imgView2.snp.makeConstraints { make in
-            make.top.trailing.equalToSuperview()
-            make.leading.equalTo(imgView.snp.trailing)
-            make.height.equalTo(413)
-            make.width.equalTo(imgView2.snp.height).multipliedBy(maxWidthContainer/maxHeightContainer)
+            make.height.equalTo(400)
         }
         
 //        rectangleImg.snp.makeConstraints { make in
@@ -362,7 +342,7 @@ class HomeFeedTableViewCell: UITableViewCell {
     private func setFooterViewConstraint() {
         
         footerView.snp.makeConstraints { make in
-            make.top.equalTo(mainScrollView.snp.bottom)
+            make.top.equalTo(mainCollectionView.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
             make.height.equalTo(185)
             make.bottom.equalToSuperview()
@@ -418,12 +398,14 @@ class HomeFeedTableViewCell: UITableViewCell {
         
         contentLabel.snp.makeConstraints { make in
             make.top.equalTo(descriptionView).offset(5)
-            make.leading.trailing.equalToSuperview()
+            make.leading.equalToSuperview()
         }
         
-        moreBtn.snp.makeConstraints { make in
-            // 나중에 구현
-        }
+//        moreBtn.snp.makeConstraints { make in
+//            make.top.equalTo(descriptionView).offset(2.8)
+//            make.trailing.equalToSuperview().offset(-30)
+//            make.leading.equalTo(contentLabel.snp.trailing)
+//        }
         
         commentView.snp.makeConstraints { make in
             make.top.equalTo(descriptionView.snp.bottom)
@@ -470,4 +452,25 @@ extension NSMutableAttributedString {
         self.append(NSAttributedString(string: string, attributes: attributes))
         return self
     }
+}
+
+extension HomeFeedTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width: CGFloat = collectionView.bounds.width
+        return CGSize(width: width, height: width)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "pageCell", for: indexPath) as? PageCollectionViewCell else { return UICollectionViewCell() }
+        
+        return cell
+    }
+    
+    
 }

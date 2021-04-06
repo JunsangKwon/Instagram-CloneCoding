@@ -19,6 +19,7 @@
 		2DAFA2F92614345F006F2822 /* NoticeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAFA2F82614345F006F2822 /* NoticeVC.swift */; };
 		2DAFA2FC2614346D006F2822 /* UserVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAFA2FB2614346D006F2822 /* UserVC.swift */; };
 		2DAFA30526144A1C006F2822 /* HomeFeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAFA30426144A1C006F2822 /* HomeFeedTableViewCell.swift */; };
+		2DCFAA6A261C1D39005A3827 /* PageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DCFAA69261C1D39005A3827 /* PageCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		2DAFA2F82614345F006F2822 /* NoticeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeVC.swift; sourceTree = "<group>"; };
 		2DAFA2FB2614346D006F2822 /* UserVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserVC.swift; sourceTree = "<group>"; };
 		2DAFA30426144A1C006F2822 /* HomeFeedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedTableViewCell.swift; sourceTree = "<group>"; };
+		2DCFAA69261C1D39005A3827 /* PageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageCollectionViewCell.swift; sourceTree = "<group>"; };
 		66F8E9F4FFB2FAF340E36E89 /* Pods-Ass2-Instagram.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ass2-Instagram.debug.xcconfig"; path = "Target Support Files/Pods-Ass2-Instagram/Pods-Ass2-Instagram.debug.xcconfig"; sourceTree = "<group>"; };
 		8B53ED5587825F0495048D19 /* Pods_Ass2_Instagram.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ass2_Instagram.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7049EEE4C58807428EAD1A1 /* Pods-Ass2-Instagram.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ass2-Instagram.release.xcconfig"; path = "Target Support Files/Pods-Ass2-Instagram/Pods-Ass2-Instagram.release.xcconfig"; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 				2DAFA2EF2614342A006F2822 /* HomeVC.swift */,
 				2D90F351261AC999002A2A8C /* StoryCollectionViewCell.swift */,
 				2DAFA30426144A1C006F2822 /* HomeFeedTableViewCell.swift */,
+				2DCFAA69261C1D39005A3827 /* PageCollectionViewCell.swift */,
 				2DAFA2D426120478006F2822 /* Assets.xcassets */,
 				2DAFA2D926120478006F2822 /* Info.plist */,
 			);
@@ -224,6 +227,7 @@
 				2DAFA2F32614343A006F2822 /* SearchVC.swift in Sources */,
 				2DAFA2F02614342A006F2822 /* HomeVC.swift in Sources */,
 				2DAFA2CC26120475006F2822 /* AppDelegate.swift in Sources */,
+				2DCFAA6A261C1D39005A3827 /* PageCollectionViewCell.swift in Sources */,
 				2DAFA30526144A1C006F2822 /* HomeFeedTableViewCell.swift in Sources */,
 				2DAFA2CE26120475006F2822 /* SceneDelegate.swift in Sources */,
 				2DAFA2F92614345F006F2822 /* NoticeVC.swift in Sources */,
