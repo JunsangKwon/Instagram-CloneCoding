@@ -18,6 +18,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         setHeaderViewConstraint()
         setCollectionViewConstraint()
         setFooterViewConstraint()
+        setLabelTap()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -52,16 +53,10 @@ class HomeFeedTableViewCell: UITableViewCell {
     private var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.numberOfPages = 3
-        pageControl.addTarget(self, action: #selector(pageControlTapHandler(sender:)), for: .touchUpInside)
         pageControl.currentPageIndicatorTintColor = UIColor.systemBlue
         pageControl.pageIndicatorTintColor = UIColor.black
         return pageControl
     }()
-    
-    // 추후에 제대로 설정
-    @objc func pageControlTapHandler(sender: UIPageControl) {
-        mainCollectionView.setContentOffset(CGPoint(x: 400, y: 0), animated: true)
-    }
     
     // FooterView 생성
     private var footerView: UIView = {
@@ -72,7 +67,7 @@ class HomeFeedTableViewCell: UITableViewCell {
     // descriptionView 생성 : FooterView 하위 뷰 (더보기버튼 관련 뷰)
     private var descriptionView: UIView = {
         let view = UIView()
-        view.frame = CGRect(x: 0, y: 0, width: 347, height: 40)
+        view.contentMode = .scaleAspectFit
         return view
     }()
     
@@ -189,7 +184,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.attributedText = NSMutableAttributedString()
             .medium(string: "ground_yourssu ", fontSize: 16)
-            .light(string: "인스타그램 클론코딩을 하고 있습니다 블라블라 블라블랍 블라블라", fontSize: 16)
+            .light(string: "인스타그램 클론코딩을 하고 있습니다 블라블라 블라블랍 블라블라 블라블라 블라블랍 블라블라블라블라 블라블랍 블라블라 블라블라 블라블랍 블라블라 블라블라 블라블랍 블라블라 ", fontSize: 16)
         label.textColor = UIColor.black
         return label
     }()
@@ -234,6 +229,7 @@ class HomeFeedTableViewCell: UITableViewCell {
     private func setStructure() {
         
         // 크게 세가지 View로 나누어 contentView에 추가
+        contentView.contentMode = .scaleAspectFit
         contentView.addSubview(headerView)
         contentView.addSubview(mainCollectionView)
         contentView.addSubview(footerView)
@@ -257,7 +253,6 @@ class HomeFeedTableViewCell: UITableViewCell {
         
         //descriptionView 구성요소 추가
         descriptionView.addSubview(contentLabel)
-        //descriptionView.addSubview(moreBtn)
         
         //commentView 구성요소 추가
         commentView.addSubview(profileImg2)
@@ -275,6 +270,21 @@ class HomeFeedTableViewCell: UITableViewCell {
         mainCollectionView.backgroundColor = .white
         mainCollectionView.showsHorizontalScrollIndicator = false
         mainCollectionView.isPagingEnabled = true
+    }
+    
+    func setLabelTap() {
+        let labelTap = UITapGestureRecognizer(target: self, action: #selector(self.labelTapped(_:)))
+        self.contentLabel.isUserInteractionEnabled = true
+        self.contentLabel.addGestureRecognizer(labelTap)
+    }
+    
+    @objc func labelTapped(_ sender: UITapGestureRecognizer) {
+        
+        contentLabel.numberOfLines = 0
+        contentLabel.snp.makeConstraints { make in
+            make.top.equalTo(descriptionView).offset(5)
+            make.leading.trailing.equalToSuperview()
+        }
     }
 
     // SnapKit 사용하여 HeaderView 의 AutoLayout
@@ -471,6 +481,12 @@ extension HomeFeedTableViewCell: UICollectionViewDelegate, UICollectionViewDataS
         
         return cell
     }
+    
+    // 스크롤 드래그가 끝났을때, 페이지 컨트롤을 바꿔줌
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let page = Int(targetContentOffset.pointee.x / self.frame.width)
+        self.pageControl.currentPage = page
+      }
     
     
 }
