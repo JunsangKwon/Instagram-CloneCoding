@@ -85,6 +85,7 @@ class HomeVC: UIViewController {
         tableView.register(HomeFeedTableViewCell.self, forCellReuseIdentifier: "HomeFeedTableViewCell")
         tableView.rowHeight = UITableView.automaticDimension
         tableView.tableHeaderView = collectionView
+        tableView.separatorStyle = .none
     }
     
     private func setCollectionView() {
@@ -121,6 +122,10 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
 
         return cell
 
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
     }
 
 }
