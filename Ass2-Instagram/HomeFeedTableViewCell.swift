@@ -17,6 +17,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         setCollectionView()
         setHeaderViewConstraint()
         setCollectionViewConstraint()
+        setStackViewConstraint()
         setButtonViewConstraint()
         setDescriptionViewConstraint()
         setCommentViewConstraint()
@@ -60,20 +61,32 @@ class HomeFeedTableViewCell: UITableViewCell {
         return pageControl
     }()
     
-    // FooterView 생성
+    // StackView 생성
+    private var stackView: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [])
+        stack.axis = .vertical
+        stack.spacing = 10
+        stack.translatesAutoresizingMaskIntoConstraints = false;
+        stack.alignment = .fill
+        stack.distribution = .fill
+
+        return stack
+    }()
+    
+    // buttonView 생성
     private var buttonView: UIView = {
         let view = UIView()
         return view
     }()
     
-    // descriptionView 생성 : FooterView 하위 뷰 (더보기버튼 관련 뷰)
+    // descriptionView 생성 (더보기버튼 관련 뷰)
     private var descriptionView: UIView = {
         let view = UIView()
         view.contentMode = .scaleAspectFit
         return view
     }()
     
-    // commentView 생성 : FooterView 하위 뷰 (댓글 창 관련 뷰)
+    // commentView 생성 (댓글 창 관련 뷰)
     private var commentView: UIView = {
         let view = UIView()
         return view
@@ -128,7 +141,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         return label
     }()
     
-    // FooterView : likeBtn 생성
+    // ButtonView : likeBtn 생성
     private let likeBtn: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: "Heart.png"), for: .normal)
@@ -136,7 +149,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         return button
     }()
     
-    // FooterView : commentBtn 생성
+    // ButtonView : commentBtn 생성
     private let commentBtn: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: "Comment.png"), for: .normal)
@@ -144,7 +157,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         return button
     }()
     
-    // FooterView : toStoryBtn 생성
+    // ButtonView : toStoryBtn 생성
     private let toStoryBtn: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: "Messanger.png"), for: .normal)
@@ -152,7 +165,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         return button
     }()
     
-    // FooterView : saveBtn 생성
+    // ButtonView : saveBtn 생성
     private let saveBtn: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: "Save.png"), for: .normal)
@@ -160,14 +173,14 @@ class HomeFeedTableViewCell: UITableViewCell {
         return button
     }()
     
-    // FooterView : likeUserImg 생성
+    // ButtonView : likeUserImg 생성
     private let likeUserImg2: UIImageView = {
         let imgView = UIImageView()
         imgView.image = UIImage(named: "User2.png")
         return imgView
     }()
     
-    // FooterView : likeInfoLabel 생성
+    // ButtonView : likeInfoLabel 생성
     private let likeInfoLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.black
@@ -179,7 +192,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         return label
     }()
     
-    // FooterView : contentLabel 생성, 줄 넘김이 안되는 오류 존재.
+    // DescriptionView : contentLabel 생성
     private let contentLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
@@ -190,33 +203,22 @@ class HomeFeedTableViewCell: UITableViewCell {
         label.textColor = UIColor.black
         return label
     }()
-  
-    // 추후에 설정
-//    // FooterView : moreBtn 생성
-//    private let moreBtn: UIButton = {
-//        let button = UIButton(type: .custom)
-//        button.setTitle("...더보기", for: .normal)
-//        button.setTitleColor(.gray, for: .normal)
-//        button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
-//        button.addTarget(self, action: #selector(buttonAction(_:)), for: .touchUpInside)
-//        return button
-//    }()
     
-    // FooterView : profileImg2 생성
+    // CommentView : profileImg2 생성
     private let profileImg2: UIImageView = {
         let imgView = UIImageView()
         imgView.image = UIImage(named: "User.png")
         return imgView
     }()
     
-    // FooterView : commentTextField 생성
+    // CommentView : commentTextField 생성
     private let commentTextField: UITextField = {
         let textfield = UITextField()
         textfield.placeholder = "댓글 달기..."
         return textfield
     }()
     
-    // FooterView : timeLabel 생성
+    // CommentView : timeLabel 생성
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.text = "2시간전"
@@ -233,10 +235,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         // 크게 세가지 View로 나누어 contentView에 추가
         contentView.addSubview(headerView)
         contentView.addSubview(mainCollectionView)
-        contentView.addSubview(buttonView)
-        contentView.addSubview(descriptionView)
-        contentView.addSubview(commentView)
-
+        contentView.addSubview(stackView)
         
         //headerView 구성요소 추가
         headerView.addSubview(profileImg)
@@ -261,8 +260,14 @@ class HomeFeedTableViewCell: UITableViewCell {
         commentView.addSubview(commentTextField)
         commentView.addSubview(timeLabel)
         
+        //stackView 구성요소 추가
+        stackView.addArrangedSubview(buttonView)
+        stackView.addArrangedSubview(descriptionView)
+        stackView.addArrangedSubview(commentView)
+   
     }
     
+    // CollectionView 설정
     private func setCollectionView() {
         mainCollectionView.delegate = self
         mainCollectionView.dataSource = self
@@ -274,19 +279,20 @@ class HomeFeedTableViewCell: UITableViewCell {
         mainCollectionView.isPagingEnabled = true
     }
     
+    // Label에 Gesture 추가
     func setLabelTap() {
         let labelTap = UITapGestureRecognizer(target: self, action: #selector(self.labelTapped(_:)))
         self.contentLabel.isUserInteractionEnabled = true
         self.contentLabel.addGestureRecognizer(labelTap)
     }
     
+    // Label 누를 때 실행
     @objc func labelTapped(_ sender: UITapGestureRecognizer) {
         
         descriptionView.snp.makeConstraints { make in
             make.top.equalTo(buttonView.snp.bottom).offset(5)
             make.leading.equalToSuperview().offset(14)
             make.trailing.equalToSuperview().offset(-14)
-            make.bottom.equalTo(commentView.snp.top)
         }
         
         contentLabel.numberOfLines = 0
@@ -357,11 +363,20 @@ class HomeFeedTableViewCell: UITableViewCell {
 //        }
     }
     
-    // SnapKit 사용하여 FooterView 의 AutoLayout
+    // StackView AutoLayout
+    private func setStackViewConstraint() {
+        stackView.snp.makeConstraints { make in
+            make.top.equalTo(mainCollectionView.snp.bottom)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+    }
+
+    
+    // SnapKit 사용하여 ButtonView 의 AutoLayout
     private func setButtonViewConstraint() {
         
         buttonView.snp.makeConstraints { make in
-            make.top.equalTo(mainCollectionView.snp.bottom)
+            make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(70)
         }
@@ -408,6 +423,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         }
     }
     
+    // 여기가 문제입니다...
     private func setDescriptionViewConstraint() {
         
         descriptionView.snp.makeConstraints { make in
@@ -428,10 +444,11 @@ class HomeFeedTableViewCell: UITableViewCell {
 //        }
     }
     
+    // CommentView 의 AutoLayout
     private func setCommentViewConstraint() {
         
         commentView.snp.makeConstraints { make in
-            make.top.equalTo(contentLabel.snp.bottom)
+            make.top.equalTo(descriptionView.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
             make.height.equalTo(70)
         }
@@ -460,6 +477,7 @@ class HomeFeedTableViewCell: UITableViewCell {
     }
 }
 
+// 글자 설정
 extension NSMutableAttributedString {
 
     func medium(string: String, fontSize: CGFloat) -> NSMutableAttributedString {
@@ -477,6 +495,7 @@ extension NSMutableAttributedString {
     }
 }
 
+// TableViewCell 안의 CollectionView 설정
 extension HomeFeedTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
