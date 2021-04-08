@@ -15,6 +15,10 @@ class TabBarController: UITabBarController {
         setTabBar()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
     func setTabBar() {
         let homeNVC = UINavigationController(rootViewController: HomeVC())
         let searchVC = SearchVC()
