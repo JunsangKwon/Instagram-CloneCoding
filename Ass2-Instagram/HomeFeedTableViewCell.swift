@@ -17,7 +17,9 @@ class HomeFeedTableViewCell: UITableViewCell {
         setCollectionView()
         setHeaderViewConstraint()
         setCollectionViewConstraint()
-        setFooterViewConstraint()
+        setButtonViewConstraint()
+        setDescriptionViewConstraint()
+        setCommentViewConstraint()
         setLabelTap()
     }
     
@@ -59,7 +61,7 @@ class HomeFeedTableViewCell: UITableViewCell {
     }()
     
     // FooterView 생성
-    private var footerView: UIView = {
+    private var buttonView: UIView = {
         let view = UIView()
         return view
     }()
@@ -229,10 +231,12 @@ class HomeFeedTableViewCell: UITableViewCell {
     private func setStructure() {
         
         // 크게 세가지 View로 나누어 contentView에 추가
-        contentView.contentMode = .scaleAspectFit
         contentView.addSubview(headerView)
         contentView.addSubview(mainCollectionView)
-        contentView.addSubview(footerView)
+        contentView.addSubview(buttonView)
+        contentView.addSubview(descriptionView)
+        contentView.addSubview(commentView)
+
         
         //headerView 구성요소 추가
         headerView.addSubview(profileImg)
@@ -240,16 +244,14 @@ class HomeFeedTableViewCell: UITableViewCell {
         headerView.addSubview(localLabel)
         headerView.addSubview(settingBtn)
         
-        //footerView 구성요소 추가
-        footerView.addSubview(likeBtn)
-        footerView.addSubview(commentBtn)
-        footerView.addSubview(toStoryBtn)
-        footerView.addSubview(pageControl)
-        footerView.addSubview(saveBtn)
-        footerView.addSubview(likeUserImg2)
-        footerView.addSubview(likeInfoLabel)
-        footerView.addSubview(descriptionView)
-        footerView.addSubview(commentView)
+        //buttonView 구성요소 추가
+        buttonView.addSubview(likeBtn)
+        buttonView.addSubview(commentBtn)
+        buttonView.addSubview(toStoryBtn)
+        buttonView.addSubview(pageControl)
+        buttonView.addSubview(saveBtn)
+        buttonView.addSubview(likeUserImg2)
+        buttonView.addSubview(likeInfoLabel)
         
         //descriptionView 구성요소 추가
         descriptionView.addSubview(contentLabel)
@@ -280,10 +282,17 @@ class HomeFeedTableViewCell: UITableViewCell {
     
     @objc func labelTapped(_ sender: UITapGestureRecognizer) {
         
+        descriptionView.snp.makeConstraints { make in
+            make.top.equalTo(buttonView.snp.bottom).offset(5)
+            make.leading.equalToSuperview().offset(14)
+            make.trailing.equalToSuperview().offset(-14)
+            make.bottom.equalTo(commentView.snp.top)
+        }
+        
         contentLabel.numberOfLines = 0
+        contentLabel.lineBreakMode = .byWordWrapping
         contentLabel.snp.makeConstraints { make in
-            make.top.equalTo(descriptionView).offset(5)
-            make.leading.trailing.equalToSuperview()
+            make.top.leading.trailing.bottom.equalToSuperview()
         }
     }
 
@@ -349,13 +358,12 @@ class HomeFeedTableViewCell: UITableViewCell {
     }
     
     // SnapKit 사용하여 FooterView 의 AutoLayout
-    private func setFooterViewConstraint() {
+    private func setButtonViewConstraint() {
         
-        footerView.snp.makeConstraints { make in
+        buttonView.snp.makeConstraints { make in
             make.top.equalTo(mainCollectionView.snp.bottom)
-            make.leading.trailing.bottom.equalToSuperview()
-            make.height.equalTo(185)
-            make.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(70)
         }
         
         likeBtn.snp.makeConstraints { make in
@@ -398,17 +406,19 @@ class HomeFeedTableViewCell: UITableViewCell {
             make.top.equalTo(likeUserImg2)
             make.trailing.equalToSuperview().offset(-12)
         }
+    }
+    
+    private func setDescriptionViewConstraint() {
         
         descriptionView.snp.makeConstraints { make in
-            make.top.equalTo(likeInfoLabel.snp.bottom).offset(5)
+            make.top.equalTo(buttonView.snp.bottom).offset(5)
             make.leading.equalToSuperview().offset(14)
             make.trailing.equalToSuperview().offset(-14)
-            make.height.equalTo(40)
+            make.height.equalTo(50)
         }
         
         contentLabel.snp.makeConstraints { make in
-            make.top.equalTo(descriptionView).offset(5)
-            make.leading.equalToSuperview()
+            make.top.leading.equalToSuperview()
         }
         
 //        moreBtn.snp.makeConstraints { make in
@@ -416,10 +426,14 @@ class HomeFeedTableViewCell: UITableViewCell {
 //            make.trailing.equalToSuperview().offset(-30)
 //            make.leading.equalTo(contentLabel.snp.trailing)
 //        }
+    }
+    
+    private func setCommentViewConstraint() {
         
         commentView.snp.makeConstraints { make in
-            make.top.equalTo(descriptionView.snp.bottom)
+            make.top.equalTo(contentLabel.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
+            make.height.equalTo(70)
         }
         
         let maxWidthContainer2 = 26
@@ -443,7 +457,6 @@ class HomeFeedTableViewCell: UITableViewCell {
             make.top.equalTo(profileImg2.snp.bottom).offset(8)
             make.trailing.equalToSuperview().offset(-321)
         }
-        
     }
 }
 
