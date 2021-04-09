@@ -85,7 +85,7 @@ class HomeVC: UIViewController {
         tableView.register(HomeFeedTableViewCell.self, forCellReuseIdentifier: "HomeFeedTableViewCell")
         tableView.rowHeight = UITableView.automaticDimension
         tableView.tableHeaderView = collectionView
-        tableView.separatorStyle = .none
+        tableView.separatorStyle = .none    // 세퍼레이터 해제
     }
     
     private func setCollectionView() {
@@ -125,6 +125,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // 셀 선택 해제
         tableView.deselectRow(at: indexPath, animated: false)
     }
 
