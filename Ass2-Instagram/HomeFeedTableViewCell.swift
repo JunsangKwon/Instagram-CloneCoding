@@ -36,6 +36,12 @@ class HomeFeedTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
+    // 재사용 문제
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+    }
+
     // HeaderView 생성
     private var headerView: UIView = {
         let view = UIView()
@@ -104,7 +110,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         let label = UILabel()
         label.text = "ground_ssu"
         label.textColor = UIColor.black
-        label.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        label.font = UIFont(name: "SFProText-Semibold", size: 13)
         return label
     }()
     
@@ -113,7 +119,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         let label = UILabel()
         label.text = "SSU, Seoul"
         label.textColor = UIColor.black
-        label.font = UIFont.systemFont(ofSize: 13, weight: .light)
+        label.font = UIFont(name: "SFProText-Regular", size: 11)
         return label
     }()
     
@@ -185,10 +191,10 @@ class HomeFeedTableViewCell: UITableViewCell {
         let label = UILabel()
         label.textColor = UIColor.black
         label.attributedText = NSMutableAttributedString()
-            .medium(string: "Juuunnns_", fontSize: 16)
-            .light(string: "님 외 ", fontSize: 16)
-            .medium(string: "100명", fontSize: 16)
-            .light(string: "이 좋아합니다", fontSize: 16)
+            .bold(string: "Juuunnns_", fontSize: 16)
+            .regular(string: "님 외 ", fontSize: 16)
+            .bold(string: "100명", fontSize: 16)
+            .regular(string: "이 좋아합니다", fontSize: 16)
         return label
     }()
     
@@ -198,8 +204,8 @@ class HomeFeedTableViewCell: UITableViewCell {
         label.numberOfLines = 1
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.attributedText = NSMutableAttributedString()
-            .medium(string: "ground_yourssu ", fontSize: 16)
-            .light(string: "인스타그램 클론코딩을 하고 있습니다 블라블라 블라블랍 블라블라 블라블라 블라블랍 블라블라블라블라 블라블랍 블라블라 블라블라 블라블랍 블라블라 블라블라 블라블랍 블라블라 ", fontSize: 16)
+            .bold(string: "ground_yourssu ", fontSize: 16)
+            .regular(string: "인스타그램 클론코딩을 하고 있습니다 블라블라 블라블랍 블라블라 블라블라 블라블랍 블라블라블라블라 블라블랍 블라블라 블라블라 블라블랍 블라블라 블라블라 블라블랍 블라블라 ", fontSize: 16)
         label.textColor = UIColor.black
         return label
     }()
@@ -215,6 +221,8 @@ class HomeFeedTableViewCell: UITableViewCell {
     private let commentTextField: UITextField = {
         let textfield = UITextField()
         textfield.placeholder = "댓글 달기..."
+        textfield.font = UIFont(name: "SFProText-Medium", size: 14)
+
         return textfield
     }()
     
@@ -222,6 +230,7 @@ class HomeFeedTableViewCell: UITableViewCell {
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.text = "2시간전"
+        label.font = UIFont(name: "SFProText-Medium", size: 12)
         label.textColor = UIColor.gray
         return label
     }()
@@ -288,8 +297,8 @@ class HomeFeedTableViewCell: UITableViewCell {
     
     // Label 누를 때 실행
     @objc func labelTapped(_ sender: UITapGestureRecognizer) {
-        
-        descriptionView.snp.makeConstraints { make in
+       
+        descriptionView.snp.remakeConstraints { make in
             make.top.equalTo(buttonView.snp.bottom).offset(5)
             make.leading.equalToSuperview().offset(14)
             make.trailing.equalToSuperview().offset(-14)
@@ -297,9 +306,10 @@ class HomeFeedTableViewCell: UITableViewCell {
         
         contentLabel.numberOfLines = 0
         contentLabel.lineBreakMode = .byWordWrapping
-        contentLabel.snp.makeConstraints { make in
+        contentLabel.snp.remakeConstraints { make in
             make.top.leading.trailing.bottom.equalToSuperview()
         }
+        
     }
 
     // SnapKit 사용하여 HeaderView 의 AutoLayout
@@ -480,17 +490,25 @@ class HomeFeedTableViewCell: UITableViewCell {
 // 글자 설정
 extension NSMutableAttributedString {
 
-    func medium(string: String, fontSize: CGFloat) -> NSMutableAttributedString {
-        let font = UIFont.systemFont(ofSize: fontSize, weight: .medium)
-        let attributes: [NSAttributedString.Key: Any] = [.font: font]
-        self.append(NSAttributedString(string: string, attributes: attributes))
+    func bold(string: String, fontSize: CGFloat) -> NSMutableAttributedString {
+        //let font = UIFont.systemFont(ofSize: fontSize, weight: .medium)
+        if let font = UIFont(name: "SFProText-Bold", size: fontSize) {
+            let attributes = [NSAttributedString.Key.font: font]
+            self.append(NSAttributedString(string: string, attributes: attributes))
+        } else {
+            print("error")
+        }
+        
         return self
-    }
+}
 
-    func light(string: String, fontSize: CGFloat) -> NSMutableAttributedString {
-        let font = UIFont.systemFont(ofSize: fontSize, weight: .light)
-        let attributes: [NSAttributedString.Key: Any] = [.font: font]
-        self.append(NSAttributedString(string: string, attributes: attributes))
+    func regular(string: String, fontSize: CGFloat) -> NSMutableAttributedString {
+        if let font = UIFont(name: "SFProText-Regular", size: fontSize) {
+            let attributes = [NSAttributedString.Key.font: font]
+            self.append(NSAttributedString(string: string, attributes: attributes))
+        } else {
+            print("error")
+        }
         return self
     }
 }

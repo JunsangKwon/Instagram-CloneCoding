@@ -31,7 +31,7 @@ class StoryCollectionViewCell: UICollectionViewCell {
     private let storyIdLabel: UILabel = {
         let label = UILabel()
         label.text = "ground_ssu"
-        label.font = UIFont.systemFont(ofSize: 13)
+        label.font = UIFont(name: "SFProText-Regular", size: 12)
         label.textColor = UIColor.black
         return label
     }()
