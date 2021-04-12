@@ -37,10 +37,6 @@ class HomeFeedTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        contentLabel.snp.updateConstraints { make in
-            make.trailing.equalToSuperview().offset(1000)
-        }
-        
     }
 
     // HeaderView 생성
