@@ -20,7 +20,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         setButtonViewConstraint()
         setDescriptionViewConstraint()
         setCommentViewConstraint()
-        //setLabelTap()
+        setPageLabel()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -54,13 +54,12 @@ class HomeFeedTableViewCell: UITableViewCell {
         return cv
     }()
     
-    // 추후에 제대로 설정
     // FooterView : pageControl 생성
     private var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.numberOfPages = 3
-        pageControl.currentPageIndicatorTintColor = UIColor.systemBlue
-        pageControl.pageIndicatorTintColor = UIColor.black
+        pageControl.currentPageIndicatorTintColor = UIColor(rgb: 0x3897F0)
+        pageControl.pageIndicatorTintColor = UIColor(rgb: 0x000000).withAlphaComponent(0.1)
         return pageControl
     }()
     
@@ -137,8 +136,8 @@ class HomeFeedTableViewCell: UITableViewCell {
     // ImageView : pageLabel 생성
     private let pageLabel: UILabel = {
         let label = UILabel()
-        label.text = "1/3"
-        label.textColor = UIColor.white
+        label.textColor = UIColor(rgb: 0xF9F9F9)
+        label.font = UIFont(name: "SFProText-Regular", size: 12)
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
@@ -246,9 +245,11 @@ class HomeFeedTableViewCell: UITableViewCell {
     
     private func setStructure() {
         
-        // 크게 세가지 View로 나누어 contentView에 추가
+        // 크게 6가지 View로 나누어 contentView에 추가
         contentView.addSubview(headerView)
         contentView.addSubview(mainCollectionView)
+        contentView.addSubview(rectangleImg)
+        rectangleImg.addSubview(pageLabel)
         contentView.addSubview(buttonView)
         contentView.addSubview(descriptionView)
         contentView.addSubview(commentView)
@@ -298,6 +299,10 @@ class HomeFeedTableViewCell: UITableViewCell {
         }
         moreBtn.removeFromSuperview()
     }
+    
+    func setPageLabel() {
+        pageLabel.text = "\(pageControl.currentPage + 1)/\(pageControl.numberOfPages)"
+    }
 
     // SnapKit 사용하여 HeaderView 의 AutoLayout
     private func setHeaderViewConstraint() {
@@ -346,19 +351,19 @@ class HomeFeedTableViewCell: UITableViewCell {
             make.height.equalTo(400)
         }
         
-//        rectangleImg.snp.makeConstraints { make in
-//            make.top.equalTo(headerView.snp.bottom).offset(14)
-//            make.trailing.equalToSuperview().offset(-14)
-//            make.width.equalTo(34)
-//            make.height.equalTo(26)
-//        }
-//
-//        pageLabel.snp.makeConstraints { make in
-//            make.top.equalTo(rectangleImg.snp.top).offset(6)
-//            make.bottom.equalTo(rectangleImg.snp.bottom).offset(-6)
-//            make.leading.equalTo(rectangleImg.snp.leading).offset(8)
-//            make.trailing.equalTo(rectangleImg.snp.trailing).offset(-8)
-//        }
+        rectangleImg.snp.makeConstraints { make in
+            make.top.equalTo(headerView.snp.bottom).offset(14)
+            make.trailing.equalToSuperview().offset(-14)
+            make.width.equalTo(34)
+            make.height.equalTo(26)
+        }
+
+        pageLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(6)
+            make.bottom.equalToSuperview().offset(-6)
+            make.leading.equalToSuperview().offset(8)
+            make.trailing.equalToSuperview().offset(-8)
+        }
     }
 
     
@@ -517,7 +522,39 @@ extension HomeFeedTableViewCell: UICollectionViewDelegate, UICollectionViewDataS
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let page = Int(targetContentOffset.pointee.x / self.frame.width)
         self.pageControl.currentPage = page
+        self.setPageLabel()
       }
     
     
+    
+}
+
+// HEX 색상 설정을 위한 extexsion
+extension UIColor {
+    
+    convenience init(red: Int, green: Int, blue: Int, a: Int = 0xFF) {
+        self.init(
+            red: CGFloat(red)/255.0,
+            green: CGFloat(green)/255.0,
+            blue: CGFloat(blue)/255.0,
+            alpha: CGFloat(a)/255.0
+        )
+    }
+    
+    convenience init(rgb: Int) {
+        self.init(
+            red: (rgb >> 16) & 0xFF,
+            green: (rgb >> 8) & 0xFF,
+            blue: rgb & 0xFF
+        )
+    }
+    
+    convenience init(argb: Int) {
+        self.init(
+            red: (argb >> 16) & 0xFF,
+            green: (argb >> 8) & 0xFF,
+            blue: argb & 0xFF,
+            a: (argb >> 24) & 0xFF
+        )
+    }
 }

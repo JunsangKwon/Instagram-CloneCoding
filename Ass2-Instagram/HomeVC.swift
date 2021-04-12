@@ -119,11 +119,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         
         let cell = tableView.cellForRow(at: indexPath) as! HomeFeedTableViewCell
         cell.unfoldLabel()
-
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-
+        tableView.reloadData() // 갑자기 그냥 문제없이 됩니다....
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -139,10 +135,12 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         cell.selectionStyle = .none
         // Label 누를 때 실행, 현재 더블 클릭을 해야만 넓어지는 문제 발생
         let labelTap = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
+        let moreTap = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
         cell.contentLabel.isUserInteractionEnabled = true
         cell.contentLabel.addGestureRecognizer(labelTap)
         cell.moreBtn.isUserInteractionEnabled = true
-        cell.moreBtn.addGestureRecognizer(labelTap)
+        cell.moreBtn.addGestureRecognizer(moreTap)
+        //cell.selectedIndex = indexPath.row
         return cell
 
     }
