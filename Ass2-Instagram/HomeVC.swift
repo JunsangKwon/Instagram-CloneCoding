@@ -135,17 +135,16 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "HomeFeedTableViewCell", for: indexPath) as? HomeFeedTableViewCell else { return UITableViewCell() }
+        // 셀 선택 해제 (수정)
+        cell.selectionStyle = .none
         // Label 누를 때 실행, 현재 더블 클릭을 해야만 넓어지는 문제 발생
         let labelTap = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
         cell.contentLabel.isUserInteractionEnabled = true
         cell.contentLabel.addGestureRecognizer(labelTap)
+        cell.moreBtn.isUserInteractionEnabled = true
+        cell.moreBtn.addGestureRecognizer(labelTap)
         return cell
 
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // 셀 선택 해제
-        tableView.deselectRow(at: indexPath, animated: false)
     }
 
 }

@@ -197,12 +197,21 @@ class HomeFeedTableViewCell: UITableViewCell {
     // DescriptionView : contentLabel 생성
     let contentLabel: UILabel = {
         let label = UILabel()
-        label.numberOfLines = 0
+        label.numberOfLines = 1
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.attributedText = NSMutableAttributedString()
             .bold(string: "ground_yourssu ", fontSize: 16)
             .regular(string: "인스타그램 클론코딩을 하고 있습니다 블라블라 블라블랍 블라블라 블라블라 블라블랍 블라블라블라블라 블라블랍 블라블라 블라블라 블라블랍 블라블라 블라블라 블라블랍 블라블라 ", fontSize: 16)
         label.textColor = UIColor.black
+        return label
+    }()
+    
+    // DescriptionView : moreBtn 생성
+    let moreBtn: UILabel = {
+        let label = UILabel()
+        label.text = "...더보기"
+        label.textColor = UIColor.darkGray
+        label.font = UIFont(name: "SFProText-Regular", size: 13)
         return label
     }()
     
@@ -261,6 +270,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         
         //descriptionView 구성요소 추가
         descriptionView.addSubview(contentLabel)
+        descriptionView.addSubview(moreBtn)
         
         //commentView 구성요소 추가
         commentView.addSubview(profileImg2)
@@ -282,9 +292,11 @@ class HomeFeedTableViewCell: UITableViewCell {
     }
   
     func unfoldLabel() {
+        contentLabel.numberOfLines = 0
         contentLabel.snp.updateConstraints { make in
             make.trailing.equalToSuperview().offset(-14)
         }
+        moreBtn.removeFromSuperview()
     }
 
     // SnapKit 사용하여 HeaderView 의 AutoLayout
@@ -413,7 +425,12 @@ class HomeFeedTableViewCell: UITableViewCell {
         contentLabel.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
             make.leading.equalToSuperview().offset(14)
-            make.trailing.equalToSuperview().offset(1000)
+            make.trailing.equalToSuperview().offset(-60)
+        }
+        
+        moreBtn.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-10)
         }
         
     }
