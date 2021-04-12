@@ -84,6 +84,7 @@ class HomeVC: UIViewController {
         
         tableView.register(HomeFeedTableViewCell.self, forCellReuseIdentifier: "HomeFeedTableViewCell")
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 644
         tableView.tableHeaderView = collectionView
         tableView.separatorStyle = .none    // 세퍼레이터 해제
     }
@@ -109,6 +110,21 @@ class HomeVC: UIViewController {
 }
 
 extension HomeVC: UITableViewDelegate, UITableViewDataSource {
+    
+    @objc func labelTapped(sender: UITapGestureRecognizer) {
+        guard let indexPath = tableView.indexPathForRow(at: sender.location(in: self.tableView)) else {
+            print("Error: indexPath)")
+            return
+        }
+        
+        let cell = tableView.cellForRow(at: indexPath) as! HomeFeedTableViewCell
+        cell.unfoldLabel()
+
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+
+    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
@@ -119,7 +135,10 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "HomeFeedTableViewCell", for: indexPath) as? HomeFeedTableViewCell else { return UITableViewCell() }
-
+        // Label 누를 때 실행, 현재 더블 클릭을 해야만 넓어지는 문제 발생
+        let labelTap = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
+        cell.contentLabel.isUserInteractionEnabled = true
+        cell.contentLabel.addGestureRecognizer(labelTap)
         return cell
 
     }

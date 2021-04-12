@@ -17,11 +17,10 @@ class HomeFeedTableViewCell: UITableViewCell {
         setCollectionView()
         setHeaderViewConstraint()
         setCollectionViewConstraint()
-        setStackViewConstraint()
         setButtonViewConstraint()
         setDescriptionViewConstraint()
         setCommentViewConstraint()
-        setLabelTap()
+        //setLabelTap()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -36,9 +35,11 @@ class HomeFeedTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
-    // 재사용 문제
     override func prepareForReuse() {
         super.prepareForReuse()
+        contentLabel.snp.updateConstraints { make in
+            make.trailing.equalToSuperview().offset(1000)
+        }
         
     }
 
@@ -88,7 +89,6 @@ class HomeFeedTableViewCell: UITableViewCell {
     // descriptionView 생성 (더보기버튼 관련 뷰)
     private var descriptionView: UIView = {
         let view = UIView()
-        view.contentMode = .scaleAspectFit
         return view
     }()
     
@@ -199,9 +199,9 @@ class HomeFeedTableViewCell: UITableViewCell {
     }()
     
     // DescriptionView : contentLabel 생성
-    private let contentLabel: UILabel = {
+    let contentLabel: UILabel = {
         let label = UILabel()
-        label.numberOfLines = 1
+        label.numberOfLines = 0
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.attributedText = NSMutableAttributedString()
             .bold(string: "ground_yourssu ", fontSize: 16)
@@ -244,7 +244,9 @@ class HomeFeedTableViewCell: UITableViewCell {
         // 크게 세가지 View로 나누어 contentView에 추가
         contentView.addSubview(headerView)
         contentView.addSubview(mainCollectionView)
-        contentView.addSubview(stackView)
+        contentView.addSubview(buttonView)
+        contentView.addSubview(descriptionView)
+        contentView.addSubview(commentView)
         
         //headerView 구성요소 추가
         headerView.addSubview(profileImg)
@@ -268,11 +270,6 @@ class HomeFeedTableViewCell: UITableViewCell {
         commentView.addSubview(profileImg2)
         commentView.addSubview(commentTextField)
         commentView.addSubview(timeLabel)
-        
-        //stackView 구성요소 추가
-        stackView.addArrangedSubview(buttonView)
-        stackView.addArrangedSubview(descriptionView)
-        stackView.addArrangedSubview(commentView)
    
     }
     
@@ -287,36 +284,19 @@ class HomeFeedTableViewCell: UITableViewCell {
         mainCollectionView.showsHorizontalScrollIndicator = false
         mainCollectionView.isPagingEnabled = true
     }
-    
-    // Label에 Gesture 추가
-    func setLabelTap() {
-        let labelTap = UITapGestureRecognizer(target: self, action: #selector(self.labelTapped(_:)))
-        self.contentLabel.isUserInteractionEnabled = true
-        self.contentLabel.addGestureRecognizer(labelTap)
-    }
-    
-    // Label 누를 때 실행
-    @objc func labelTapped(_ sender: UITapGestureRecognizer) {
-       
-        descriptionView.snp.remakeConstraints { make in
-            make.top.equalTo(buttonView.snp.bottom).offset(5)
-            make.leading.equalToSuperview().offset(14)
+  
+    func unfoldLabel() {
+        contentLabel.snp.updateConstraints { make in
             make.trailing.equalToSuperview().offset(-14)
         }
-        
-        contentLabel.numberOfLines = 0
-        contentLabel.lineBreakMode = .byWordWrapping
-        contentLabel.snp.remakeConstraints { make in
-            make.top.leading.trailing.bottom.equalToSuperview()
-        }
-        
     }
 
     // SnapKit 사용하여 HeaderView 의 AutoLayout
     private func setHeaderViewConstraint() {
         
         headerView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
+            make.top.equalTo(contentView.snp.top)
+            make.leading.trailing.equalToSuperview()
             make.height.equalTo(54)
         }
         
@@ -372,21 +352,13 @@ class HomeFeedTableViewCell: UITableViewCell {
 //            make.trailing.equalTo(rectangleImg.snp.trailing).offset(-8)
 //        }
     }
-    
-    // StackView AutoLayout
-    private func setStackViewConstraint() {
-        stackView.snp.makeConstraints { make in
-            make.top.equalTo(mainCollectionView.snp.bottom)
-            make.leading.trailing.bottom.equalToSuperview()
-        }
-    }
 
     
     // SnapKit 사용하여 ButtonView 의 AutoLayout
     private func setButtonViewConstraint() {
         
         buttonView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+            make.top.equalTo(mainCollectionView.snp.bottom)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(70)
         }
@@ -438,20 +410,16 @@ class HomeFeedTableViewCell: UITableViewCell {
         
         descriptionView.snp.makeConstraints { make in
             make.top.equalTo(buttonView.snp.bottom).offset(5)
-            make.leading.equalToSuperview().offset(14)
-            make.trailing.equalToSuperview().offset(-14)
-            make.height.equalTo(50)
+            make.leading.trailing.equalToSuperview()
+            make.height.greaterThanOrEqualTo(0)
         }
         
         contentLabel.snp.makeConstraints { make in
-            make.top.leading.equalToSuperview()
+            make.top.bottom.equalToSuperview()
+            make.leading.equalToSuperview().offset(14)
+            make.trailing.equalToSuperview().offset(1000)
         }
         
-//        moreBtn.snp.makeConstraints { make in
-//            make.top.equalTo(descriptionView).offset(2.8)
-//            make.trailing.equalToSuperview().offset(-30)
-//            make.leading.equalTo(contentLabel.snp.trailing)
-//        }
     }
     
     // CommentView 의 AutoLayout
@@ -459,7 +427,8 @@ class HomeFeedTableViewCell: UITableViewCell {
         
         commentView.snp.makeConstraints { make in
             make.top.equalTo(descriptionView.snp.bottom)
-            make.leading.trailing.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(contentView.snp.bottom)
             make.height.equalTo(70)
         }
         
@@ -515,10 +484,9 @@ extension NSMutableAttributedString {
 
 // TableViewCell 안의 CollectionView 설정
 extension HomeFeedTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width: CGFloat = collectionView.bounds.width
-        return CGSize(width: width, height: width)
+        return CGSize(width: collectionView.frame.width , height: collectionView.frame.height - (collectionView.safeAreaInsets.top + collectionView.safeAreaInsets.bottom))
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
