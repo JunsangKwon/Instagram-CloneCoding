@@ -34,7 +34,7 @@ class StoryCollectionViewCell: UICollectionViewCell {
         let imgView = UIImageView()
         imgView.image = UIImage(named: "story1.png")
         imgView.layer.borderColor = CGColor(red: 1, green: 1, blue: 1, alpha: 1)
-        imgView.layer.borderWidth = 3
+        imgView.layer.borderWidth = 2
         imgView.layer.cornerRadius = 28
         return imgView
     }()
