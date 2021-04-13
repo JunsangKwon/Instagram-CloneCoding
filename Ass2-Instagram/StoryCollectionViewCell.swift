@@ -13,6 +13,7 @@ class StoryCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setConstruct()
+        setGradient()
         setConstraints()
     }
     
@@ -20,10 +21,21 @@ class StoryCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // storyBorderView 생성
+    private let storyBorderView: UIView = {
+        let view = UIView()
+        view.frame = CGRect(x: 0, y: 0, width: 62, height: 62)
+        view.layer.cornerRadius = 31
+        return view
+    }()
+    
     // storyImgView 생성
     private let storyimgView: UIImageView = {
         let imgView = UIImageView()
         imgView.image = UIImage(named: "story1.png")
+        imgView.layer.borderColor = CGColor(red: 1, green: 1, blue: 1, alpha: 1)
+        imgView.layer.borderWidth = 3
+        imgView.layer.cornerRadius = 28
         return imgView
     }()
     
@@ -37,8 +49,25 @@ class StoryCollectionViewCell: UICollectionViewCell {
     }()
     
     func setConstruct() {
+        contentView.addSubview(storyBorderView)
         contentView.addSubview(storyimgView)
         contentView.addSubview(storyIdLabel)
+    }
+    
+    // 그라디언트 생성
+    func setGradient() {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = storyBorderView.bounds
+        let colors: [CGColor] = [
+           .init(red: 0.98, green: 0.67, blue:  0.28, alpha: 1),
+           .init(red: 0.85, green:  0.1, blue: 0.27, alpha: 1),
+           .init(red: 0.65, green: 0.06, blue: 0.58, alpha: 1)
+        ]
+        gradientLayer.colors = colors
+        gradientLayer.startPoint = CGPoint(x: 0.0, y: 1.0)
+        gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.0)
+        gradientLayer.cornerRadius = 31
+        storyBorderView.layer.addSublayer(gradientLayer)
     }
     
     func setConstraints() {
@@ -46,15 +75,25 @@ class StoryCollectionViewCell: UICollectionViewCell {
         let maxWidthContainer = 62
         let maxHeightContainer = 62
         
-        storyimgView.snp.makeConstraints { make in
+        storyBorderView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(7)
             make.centerX.equalToSuperview()
             make.height.equalTo(62)
-            make.width.equalTo(storyimgView.snp.height).multipliedBy(maxWidthContainer/maxHeightContainer)
+            make.width.equalTo(storyBorderView.snp.height).multipliedBy(maxWidthContainer/maxHeightContainer)
+        }
+        
+        let maxWidthContainer2 = 56
+        let maxHeightContainer2 = 56
+        
+        storyimgView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(10)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(56)
+            make.width.equalTo(storyimgView.snp.height).multipliedBy(maxWidthContainer2/maxHeightContainer2)
         }
         
         storyIdLabel.snp.makeConstraints { make in
-            make.top.equalTo(storyimgView.snp.bottom).offset(4)
+            make.top.equalTo(storyBorderView.snp.bottom).offset(3)
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview()
         }
