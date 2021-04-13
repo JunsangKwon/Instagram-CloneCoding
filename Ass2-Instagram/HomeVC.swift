@@ -9,6 +9,9 @@ import UIKit
 import SnapKit
 
 class HomeVC: UIViewController {
+    
+    var indexArray: [Int]? = [-1] // 클릭했던 인덱스들을 저장할 배열
+    var flag: Bool = false // 배열안에 있으면 true, 아니면 false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,6 +122,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         
         let cell = tableView.cellForRow(at: indexPath) as! HomeFeedTableViewCell
         cell.unfoldLabel()
+        indexArray?.append(indexPath.row)
         tableView.reloadData() // 갑자기 그냥 문제없이 됩니다....
     }
 
@@ -140,7 +144,21 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         cell.contentLabel.addGestureRecognizer(labelTap)
         cell.moreBtn.isUserInteractionEnabled = true
         cell.moreBtn.addGestureRecognizer(moreTap)
-        //cell.selectedIndex = indexPath.row
+        
+        for i in indexArray! {
+            if(i == indexPath.row) {
+                flag = true
+                break
+            }
+        }
+        
+        if(flag) {
+            cell.isTouched = true
+            flag = false
+        } else {
+            cell.isTouched = false
+        }
+
         return cell
 
     }

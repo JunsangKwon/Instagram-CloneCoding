@@ -10,6 +10,16 @@ import SnapKit
 
 class HomeFeedTableViewCell: UITableViewCell {
     
+    var isTouched: Bool? {
+        didSet {
+            if isTouched == true {
+                contentLabel.numberOfLines = 0
+            } else {
+                contentLabel.numberOfLines = 1
+            }
+        }
+    }
+    
     // Cell 사용 위해서 초기화
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -33,10 +43,6 @@ class HomeFeedTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
     }
 
     // HeaderView 생성
@@ -63,17 +69,6 @@ class HomeFeedTableViewCell: UITableViewCell {
         return pageControl
     }()
     
-    // StackView 생성
-    private var stackView: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [])
-        stack.axis = .vertical
-        stack.spacing = 10
-        stack.translatesAutoresizingMaskIntoConstraints = false;
-        stack.alignment = .fill
-        stack.distribution = .fill
-
-        return stack
-    }()
     
     // buttonView 생성
     private var buttonView: UIView = {
