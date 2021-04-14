@@ -25,7 +25,7 @@ class StoryCollectionViewCell: UICollectionViewCell {
     private let storyBorderView: UIView = {
         let view = UIView()
         view.frame = CGRect(x: 0, y: 0, width: 62, height: 62)
-        view.layer.cornerRadius = 31
+        view.layer.cornerRadius = view.frame.width/2
         return view
     }()
     
@@ -33,9 +33,10 @@ class StoryCollectionViewCell: UICollectionViewCell {
     private let storyimgView: UIImageView = {
         let imgView = UIImageView()
         imgView.image = UIImage(named: "story1.png")
+        imgView.frame = CGRect(x: 0, y: 0, width: 56, height: 56)
         imgView.layer.borderColor = CGColor(red: 1, green: 1, blue: 1, alpha: 1)
         imgView.layer.borderWidth = 2
-        imgView.layer.cornerRadius = 28
+        imgView.layer.cornerRadius = imgView.frame.width/2
         return imgView
     }()
     
@@ -43,7 +44,7 @@ class StoryCollectionViewCell: UICollectionViewCell {
     private let storyIdLabel: UILabel = {
         let label = UILabel()
         label.text = "ground_ssu"
-        label.font = UIFont(name: "SFProText-Regular", size: 12)
+        label.font = UIFont.storyIdLabelFont
         label.textColor = UIColor.black
         return label
     }()
@@ -66,7 +67,7 @@ class StoryCollectionViewCell: UICollectionViewCell {
         gradientLayer.colors = colors
         gradientLayer.startPoint = CGPoint(x: 0.0, y: 1.0)
         gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.0)
-        gradientLayer.cornerRadius = 31
+        gradientLayer.cornerRadius = gradientLayer.frame.width/2
         storyBorderView.layer.addSublayer(gradientLayer)
     }
     

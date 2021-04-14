@@ -13,9 +13,9 @@ class HomeFeedTableViewCell: UITableViewCell {
     var isTouched: Bool? {
         didSet {
             if isTouched == true {
-                contentLabel.numberOfLines = 0
+                unfoldLabel()
             } else {
-                contentLabel.numberOfLines = 1
+                foldLabel()
             }
         }
     }
@@ -44,6 +44,13 @@ class HomeFeedTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        pageControl.currentPage = 0
+        setPageLabel()
+        mainCollectionView.contentOffset = .zero
+    }
 
     // HeaderView 생성
     private var headerView: UIView = {
@@ -61,11 +68,11 @@ class HomeFeedTableViewCell: UITableViewCell {
     }()
     
     // FooterView : pageControl 생성
-    private var pageControl: UIPageControl = {
+    var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.numberOfPages = 3
-        pageControl.currentPageIndicatorTintColor = UIColor(rgb: 0x3897F0)
-        pageControl.pageIndicatorTintColor = UIColor(rgb: 0x000000).withAlphaComponent(0.1)
+        pageControl.currentPageIndicatorTintColor = UIColor.currentPageColor
+        pageControl.pageIndicatorTintColor = UIColor.restOfPageColor
         return pageControl
     }()
     
@@ -100,7 +107,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         let label = UILabel()
         label.text = "ground_ssu"
         label.textColor = UIColor.black
-        label.font = UIFont(name: "SFProText-Semibold", size: 13)
+        label.font = UIFont.idLabelFont
         return label
     }()
     
@@ -109,7 +116,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         let label = UILabel()
         label.text = "SSU, Seoul"
         label.textColor = UIColor.black
-        label.font = UIFont(name: "SFProText-Regular", size: 11)
+        label.font = UIFont.localLabelFont
         return label
     }()
     
@@ -131,8 +138,8 @@ class HomeFeedTableViewCell: UITableViewCell {
     // ImageView : pageLabel 생성
     private let pageLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor(rgb: 0xF9F9F9)
-        label.font = UIFont(name: "SFProText-Regular", size: 12)
+        label.textColor = UIColor.pageLabelColor
+        label.font = UIFont.pageLabelFont
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
@@ -205,7 +212,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         let label = UILabel()
         label.text = "...더보기"
         label.textColor = UIColor.darkGray
-        label.font = UIFont(name: "SFProText-Regular", size: 13)
+        label.font = UIFont.moreBtnFont
         return label
     }()
     
@@ -220,7 +227,7 @@ class HomeFeedTableViewCell: UITableViewCell {
     private let commentTextField: UITextField = {
         let textfield = UITextField()
         textfield.placeholder = "댓글 달기..."
-        textfield.font = UIFont(name: "SFProText-Medium", size: 14)
+        textfield.font = UIFont.commentTextFieldFont
 
         return textfield
     }()
@@ -229,7 +236,7 @@ class HomeFeedTableViewCell: UITableViewCell {
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.text = "2시간전"
-        label.font = UIFont(name: "SFProText-Medium", size: 12)
+        label.font = UIFont.timeLabelFont
         label.textColor = UIColor.gray
         return label
     }()
@@ -293,6 +300,21 @@ class HomeFeedTableViewCell: UITableViewCell {
             make.trailing.equalToSuperview().offset(-14)
         }
         moreBtn.removeFromSuperview()
+    }
+    
+    func foldLabel() {
+        contentLabel.numberOfLines = 1
+        descriptionView.addSubview(moreBtn)
+        contentLabel.snp.remakeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.leading.equalToSuperview().offset(14)
+            make.trailing.equalToSuperview().offset(-60)
+        }
+        
+        moreBtn.snp.remakeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-10)
+        }
     }
     
     func setPageLabel() {
@@ -469,32 +491,6 @@ class HomeFeedTableViewCell: UITableViewCell {
     }
 }
 
-// 글자 설정
-extension NSMutableAttributedString {
-
-    func bold(string: String, fontSize: CGFloat) -> NSMutableAttributedString {
-        //let font = UIFont.systemFont(ofSize: fontSize, weight: .medium)
-        if let font = UIFont(name: "SFProText-Bold", size: fontSize) {
-            let attributes = [NSAttributedString.Key.font: font]
-            self.append(NSAttributedString(string: string, attributes: attributes))
-        } else {
-            print("error")
-        }
-        
-        return self
-}
-
-    func regular(string: String, fontSize: CGFloat) -> NSMutableAttributedString {
-        if let font = UIFont(name: "SFProText-Regular", size: fontSize) {
-            let attributes = [NSAttributedString.Key.font: font]
-            self.append(NSAttributedString(string: string, attributes: attributes))
-        } else {
-            print("error")
-        }
-        return self
-    }
-}
-
 // TableViewCell 안의 CollectionView 설정
 extension HomeFeedTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
@@ -520,36 +516,4 @@ extension HomeFeedTableViewCell: UICollectionViewDelegate, UICollectionViewDataS
         self.setPageLabel()
       }
     
-    
-    
-}
-
-// HEX 색상 설정을 위한 extexsion
-extension UIColor {
-    
-    convenience init(red: Int, green: Int, blue: Int, a: Int = 0xFF) {
-        self.init(
-            red: CGFloat(red)/255.0,
-            green: CGFloat(green)/255.0,
-            blue: CGFloat(blue)/255.0,
-            alpha: CGFloat(a)/255.0
-        )
-    }
-    
-    convenience init(rgb: Int) {
-        self.init(
-            red: (rgb >> 16) & 0xFF,
-            green: (rgb >> 8) & 0xFF,
-            blue: rgb & 0xFF
-        )
-    }
-    
-    convenience init(argb: Int) {
-        self.init(
-            red: (argb >> 16) & 0xFF,
-            green: (argb >> 8) & 0xFF,
-            blue: argb & 0xFF,
-            a: (argb >> 24) & 0xFF
-        )
-    }
 }

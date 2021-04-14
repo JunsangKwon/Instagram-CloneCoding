@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1C7C9F306A26340CE87D8FAA /* Pods_Ass2_Instagram.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B53ED5587825F0495048D19 /* Pods_Ass2_Instagram.framework */; };
+		2D2AF92B26269E05004E8465 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2AF92A26269E05004E8465 /* UIColorExtension.swift */; };
+		2D2AF92E2626A575004E8465 /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2AF92D2626A575004E8465 /* UIFontExtension.swift */; };
 		2D90F352261AC999002A2A8C /* StoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D90F351261AC999002A2A8C /* StoryCollectionViewCell.swift */; };
 		2DAFA2CC26120475006F2822 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAFA2CB26120475006F2822 /* AppDelegate.swift */; };
 		2DAFA2CE26120475006F2822 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAFA2CD26120475006F2822 /* SceneDelegate.swift */; };
@@ -27,6 +29,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2D2AF92A26269E05004E8465 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		2D2AF92D2626A575004E8465 /* UIFontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
 		2D90F351261AC999002A2A8C /* StoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		2DAFA2C826120475006F2822 /* Ass2-Instagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ass2-Instagram.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DAFA2CB26120475006F2822 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -91,6 +95,8 @@
 				2DAFA2FB2614346D006F2822 /* UserVC.swift */,
 				2DAFA2F52614344B006F2822 /* VideoVC.swift */,
 				2DAFA2EF2614342A006F2822 /* HomeVC.swift */,
+				2D2AF92A26269E05004E8465 /* UIColorExtension.swift */,
+				2D2AF92D2626A575004E8465 /* UIFontExtension.swift */,
 				2D90F351261AC999002A2A8C /* StoryCollectionViewCell.swift */,
 				2DAFA30426144A1C006F2822 /* HomeFeedTableViewCell.swift */,
 				2DCFAA69261C1D39005A3827 /* PageCollectionViewCell.swift */,
@@ -248,6 +254,8 @@
 				2DAFA2CE26120475006F2822 /* SceneDelegate.swift in Sources */,
 				2DAFA2F92614345F006F2822 /* NoticeVC.swift in Sources */,
 				2DAFA2FC2614346D006F2822 /* UserVC.swift in Sources */,
+				2D2AF92B26269E05004E8465 /* UIColorExtension.swift in Sources */,
+				2D2AF92E2626A575004E8465 /* UIFontExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
