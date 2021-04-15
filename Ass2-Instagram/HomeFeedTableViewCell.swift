@@ -44,13 +44,6 @@ class HomeFeedTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        pageControl.currentPage = 0
-        setPageLabel()
-        mainCollectionView.contentOffset = .zero
-    }
 
     // HeaderView 생성
     private var headerView: UIView = {
@@ -59,7 +52,7 @@ class HomeFeedTableViewCell: UITableViewCell {
     }()
     
     // MainCollectionView 생성
-    private var mainCollectionView: UICollectionView = {
+    var mainCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         layout.scrollDirection = .horizontal

@@ -12,6 +12,8 @@ class HomeVC: UIViewController {
     
     var indexArray: [Int] = [] // 클릭했던 인덱스들을 저장할 배열
     var flag: Bool = false // 배열안에 있으면 true, 아니면 false
+    var cachedPosition = Dictionary<Int,CGPoint>() // 셀이 사라질 때, 마지막 offset을 저장하는 배열
+    var pageOfCell: [Int] = [0,0,0,0,0,0,0,0,0,0] // 셀이 사라질 때, 마지막 페이지를 저장하는 배열
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -145,6 +147,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         cell.moreBtn.isUserInteractionEnabled = true
         cell.moreBtn.addGestureRecognizer(moreTap)
         
+        // 뷰 높이 재사용 문제 해결
         for i in indexArray {
             if(i == indexPath.row) {
                 flag = true
@@ -158,9 +161,25 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         } else {
             cell.isTouched = false
         }
+        
+        // 페이지 재사용 문제 해결
+        cell.mainCollectionView.contentOffset = .zero // 첨으로 초기화
+        cell.pageControl.currentPage = pageOfCell[indexPath.row]
+        cell.setPageLabel()
+
+        if let offset = cachedPosition[indexPath.row] {
+            cell.mainCollectionView.contentOffset = offset
+        }
 
         return cell
 
+    }
+    
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let cell = cell as? HomeFeedTableViewCell {
+            cachedPosition[indexPath.row] = cell.mainCollectionView.contentOffset
+            pageOfCell[indexPath.row] = cell.pageControl.currentPage
+        }
     }
 
 }
