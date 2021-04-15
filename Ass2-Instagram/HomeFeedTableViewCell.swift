@@ -30,6 +30,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         setButtonViewConstraint()
         setDescriptionViewConstraint()
         setCommentViewConstraint()
+        checkContentLabel()
         setPageLabel()
     }
     
@@ -310,6 +311,14 @@ class HomeFeedTableViewCell: UITableViewCell {
         }
     }
     
+    func checkContentLabel() {
+        if(!contentLabel.isTruncated) {
+            moreBtn.isHidden = true
+        } else {
+            moreBtn.isHidden = false
+        }
+    }
+    
     func setPageLabel() {
         pageLabel.text = "\(pageControl.currentPage + 1)/\(pageControl.numberOfPages)"
     }
@@ -509,4 +518,24 @@ extension HomeFeedTableViewCell: UICollectionViewDelegate, UICollectionViewDataS
         self.setPageLabel()
       }
     
+}
+
+extension UILabel {
+
+    var isTruncated: Bool {
+
+        guard let labelText = text else {
+            return false
+        }
+
+        let labelTextSize = (labelText as NSString).boundingRect(
+            with: CGSize(width: frame.size.width, height: .greatestFiniteMagnitude),
+            options: .usesLineFragmentOrigin,
+            attributes: [.font: font!],
+            context: nil).size
+        
+        print(labelTextSize)
+
+        return labelTextSize.width > 338
+    }
 }
