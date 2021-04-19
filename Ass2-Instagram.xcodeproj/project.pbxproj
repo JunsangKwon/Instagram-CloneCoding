@@ -66,6 +66,49 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2D2AF93126296024004E8465 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				2DAFA2CF26120475006F2822 /* TabBarController.swift */,
+				2DAFA2EF2614342A006F2822 /* HomeVC.swift */,
+				2DAFA2F52614344B006F2822 /* VideoVC.swift */,
+				2DAFA2FB2614346D006F2822 /* UserVC.swift */,
+				2DAFA2F82614345F006F2822 /* NoticeVC.swift */,
+				2DAFA2F22614343A006F2822 /* SearchVC.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		2D2AF9332629604F004E8465 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2D2AF92D2626A575004E8465 /* UIFontExtension.swift */,
+				2D2AF92A26269E05004E8465 /* UIColorExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		2D2AF93426296075004E8465 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				2DCFAA69261C1D39005A3827 /* PageCollectionViewCell.swift */,
+				2DAFA30426144A1C006F2822 /* HomeFeedTableViewCell.swift */,
+				2D90F351261AC999002A2A8C /* StoryCollectionViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		2D2AF93526296091004E8465 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				2DD95B812621ED5C0048EDB6 /* SFProText-Bold.ttf */,
+				2DD95B802621ED5C0048EDB6 /* SFProText-Regular.ttf */,
+				2DD95B872621F5600048EDB6 /* SFProText-Medium.ttf */,
+				2DD95B822621ED5D0048EDB6 /* SFProText-Semibold.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		2DAFA2BF26120475006F2822 = {
 			isa = PBXGroup;
 			children = (
@@ -87,24 +130,13 @@
 		2DAFA2CA26120475006F2822 /* Ass2-Instagram */ = {
 			isa = PBXGroup;
 			children = (
+				2D2AF93526296091004E8465 /* Fonts */,
+				2D2AF93426296075004E8465 /* Cells */,
+				2D2AF9332629604F004E8465 /* Extensions */,
+				2D2AF93126296024004E8465 /* Controllers */,
 				2DAFA2CB26120475006F2822 /* AppDelegate.swift */,
 				2DAFA2CD26120475006F2822 /* SceneDelegate.swift */,
-				2DAFA2CF26120475006F2822 /* TabBarController.swift */,
-				2DAFA2F22614343A006F2822 /* SearchVC.swift */,
-				2DAFA2F82614345F006F2822 /* NoticeVC.swift */,
-				2DAFA2FB2614346D006F2822 /* UserVC.swift */,
-				2DAFA2F52614344B006F2822 /* VideoVC.swift */,
-				2DAFA2EF2614342A006F2822 /* HomeVC.swift */,
-				2D2AF92A26269E05004E8465 /* UIColorExtension.swift */,
-				2D2AF92D2626A575004E8465 /* UIFontExtension.swift */,
-				2D90F351261AC999002A2A8C /* StoryCollectionViewCell.swift */,
-				2DAFA30426144A1C006F2822 /* HomeFeedTableViewCell.swift */,
-				2DCFAA69261C1D39005A3827 /* PageCollectionViewCell.swift */,
 				2DAFA2D426120478006F2822 /* Assets.xcassets */,
-				2DD95B812621ED5C0048EDB6 /* SFProText-Bold.ttf */,
-				2DD95B802621ED5C0048EDB6 /* SFProText-Regular.ttf */,
-				2DD95B872621F5600048EDB6 /* SFProText-Medium.ttf */,
-				2DD95B822621ED5D0048EDB6 /* SFProText-Semibold.ttf */,
 				2DAFA2D926120478006F2822 /* Info.plist */,
 			);
 			path = "Ass2-Instagram";

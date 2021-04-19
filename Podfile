@@ -7,4 +7,6 @@ target 'Ass2-Instagram' do
 
   # Pods for Ass2-Instagram
   pod "SnapKit"
+  pod 'Alamofire', '~> 5.2'
+  pod 'SwiftyJSON', '~> 4.0'
 end

@@ -534,8 +534,6 @@ extension UILabel {
             attributes: [.font: font!],
             context: nil).size
         
-        print(labelTextSize)
-
         return labelTextSize.width > 338
     }
 }
