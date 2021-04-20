@@ -20,11 +20,26 @@ class PageCollectionViewCell: UICollectionViewCell {
     }
     
     // storyImgView 생성
-    private let instaImgView: UIImageView = {
+    let instaImgView: UIImageView = {
         let imgView = UIImageView()
-        imgView.image = UIImage(named: "InstaImage.png")
+        //imgView.image = UIImage(named: "InstaImage.png")
         return imgView
     }()
+    
+    // imageURL을 image로 변경
+    func loadImage(_ url: String?) {
+        let downloadQueue = DispatchQueue(__label: url,attr: nil)
+        downloadQueue.async(){
+            let data = NSData(contentsOf: NSURL(string: url!)! as URL)
+            var image: UIImage?
+            if (data != nil){
+                image = UIImage(data: data! as Data)
+            }
+            DispatchQueue.main.async {
+                self.instaImgView.image = image
+            }
+        }
+    }
     
     func setConstruct() {
         contentView.addSubview(instaImgView)

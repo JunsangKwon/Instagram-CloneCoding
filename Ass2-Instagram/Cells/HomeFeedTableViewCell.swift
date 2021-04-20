@@ -10,6 +10,8 @@ import SnapKit
 
 class HomeFeedTableViewCell: UITableViewCell {
     
+    let network = Network() // 네트워크 연결시 사용
+    
     var isTouched: Bool? {
         didSet {
             if isTouched == true {
@@ -97,7 +99,7 @@ class HomeFeedTableViewCell: UITableViewCell {
     }()
     
     // HeaderView : idLabel 생성
-    private let idLabel: UILabel = {
+    let idLabel: UILabel = {
         let label = UILabel()
         label.text = "ground_ssu"
         label.textColor = UIColor.black
@@ -507,6 +509,11 @@ extension HomeFeedTableViewCell: UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "pageCell", for: indexPath) as? PageCollectionViewCell else { return UICollectionViewCell() }
+        
+        // 네트워크 연결하여 instaImgView 세팅
+        network.getImageInfo(index: indexPath.item) { imageData in
+            cell.loadImage(imageData.imageURL)
+        }
         
         return cell
     }

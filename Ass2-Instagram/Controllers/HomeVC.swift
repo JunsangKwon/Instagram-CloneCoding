@@ -14,6 +14,8 @@ class HomeVC: UIViewController {
     var flag: Bool = false // 배열안에 있으면 true, 아니면 false
     var cachedPosition = Dictionary<Int,CGPoint>() // 셀이 사라질 때, 마지막 offset을 저장하는 배열
     var pageOfCell: [Int] = [0,0,0,0,0,0,0,0,0,0] // 셀이 사라질 때, 마지막 페이지를 저장하는 배열
+    
+    let network = Network() // 네트워크 연결시 사용
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -139,7 +141,14 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "HomeFeedTableViewCell", for: indexPath) as? HomeFeedTableViewCell else { return UITableViewCell() }
         // 셀 선택 해제 (수정)
         cell.selectionStyle = .none
-        // Label 누를 때 실행, 현재 더블 클릭을 해야만 넓어지는 문제 발생
+        
+        // 네트워크 연결하여 idLabel, contentLabel 세팅
+        network.getTextInfo(index: indexPath.row) { textData in
+            cell.idLabel.text = textData.username
+            cell.contentLabel.text = textData.username + textData.content
+        }
+        
+        // Label 누를 때 실행
         let labelTap = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
         let moreTap = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
         cell.contentLabel.isUserInteractionEnabled = true
