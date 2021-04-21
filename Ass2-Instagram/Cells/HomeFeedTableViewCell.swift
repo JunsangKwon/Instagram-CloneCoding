@@ -10,6 +10,7 @@ import SnapKit
 
 class HomeFeedTableViewCell: UITableViewCell {
     
+    var imageDataDic = Dictionary<Int, ImageData>() // 네트워크 연결한 Image 정보를 저장하는 Dictionary
     let network = Network() // 네트워크 연결시 사용
     
     var isTouched: Bool? {
@@ -512,7 +513,17 @@ extension HomeFeedTableViewCell: UICollectionViewDelegate, UICollectionViewDataS
         
         // 네트워크 연결하여 instaImgView 세팅
         network.getImageInfo(index: indexPath.item) { imageData in
-            cell.loadImage(imageData.imageURL)
+            if self.imageDataDic[indexPath.row] != nil {
+                return
+            } else {
+                cell.loadImage(imageData.imageURL)
+                self.imageDataDic[indexPath.row] = imageData
+            }
+        }
+        
+        // 이미지 페이지 넘기면 바뀌는 문제 해결
+        if let imgdata = self.imageDataDic[indexPath.row] {
+            cell.loadImage(imgdata.imageURL)
         }
         
         return cell

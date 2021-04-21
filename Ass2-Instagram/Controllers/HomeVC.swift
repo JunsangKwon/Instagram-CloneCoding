@@ -12,8 +12,9 @@ class HomeVC: UIViewController {
     
     var indexArray: [Int] = [] // 클릭했던 인덱스들을 저장할 배열
     var flag: Bool = false // 배열안에 있으면 true, 아니면 false
-    var cachedPosition = Dictionary<Int,CGPoint>() // 셀이 사라질 때, 마지막 offset을 저장하는 배열
+    var cachedPosition = Dictionary<Int,CGPoint>() // 셀이 사라질 때, 마지막 offset을 저장하는 Dictionary
     var pageOfCell: [Int] = [0,0,0,0,0,0,0,0,0,0] // 셀이 사라질 때, 마지막 페이지를 저장하는 배열
+    var textDataDic = Dictionary<Int, TextData>() // 네트워크 연결한 Text 정보를 저장하는 Dictionary
     
     let network = Network() // 네트워크 연결시 사용
 
@@ -142,10 +143,15 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         // 셀 선택 해제 (수정)
         cell.selectionStyle = .none
         
-        // 네트워크 연결하여 idLabel, contentLabel 세팅
+        // 네트워크 연결하여 idLabel, contentLabel 세팅 및 재사용 문제 방지 세팅
         network.getTextInfo(index: indexPath.row) { textData in
-            cell.idLabel.text = textData.username
-            cell.contentLabel.text = textData.username + textData.content
+            if self.textDataDic[indexPath.row] != nil {
+                return
+            } else {
+                cell.idLabel.text = textData.username
+                cell.contentLabel.text = textData.username + textData.content
+                self.textDataDic[indexPath.row] = textData
+            }
         }
         
         // Label 누를 때 실행
@@ -179,7 +185,13 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         if let offset = cachedPosition[indexPath.row] {
             cell.mainCollectionView.contentOffset = offset
         }
-
+        
+        // text 재사용 문제 해결
+        if let textdata = self.textDataDic[indexPath.row] {
+            cell.idLabel.text = textdata.username
+            cell.contentLabel.text = textdata.username + textdata.content
+        }
+        
         return cell
 
     }
