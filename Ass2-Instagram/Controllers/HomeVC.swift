@@ -15,6 +15,9 @@ class HomeVC: UIViewController {
     var cachedPosition = Dictionary<Int,CGPoint>() // 셀이 사라질 때, 마지막 offset을 저장하는 Dictionary
     var pageOfCell: [Int] = [0,0,0,0,0,0,0,0,0,0] // 셀이 사라질 때, 마지막 페이지를 저장하는 배열
     var textDataDic = Dictionary<Int, TextData>() // 네트워크 연결한 Text 정보를 저장하는 Dictionary
+    var fetchingMore = false // 무한 스크롤 구현 변수
+    var count = 10 // 셀의 개수
+
     
     let network = Network() // 네트워크 연결시 사용
 
@@ -26,6 +29,18 @@ class HomeVC: UIViewController {
         setCollectionView()
         setConstraint()
     }
+    
+    // 스피너 생성
+    private func createSpinnerFooter() -> UIView {
+            let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 100))
+            
+            let spinner = UIActivityIndicatorView()
+            spinner.center = footerView.center
+            footerView.addSubview(spinner)
+            spinner.startAnimating()
+            
+            return footerView
+        }
     
     private func setNavBar() {
         // LeftButton 설정
@@ -133,7 +148,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
-        return 10
+        return count
 
     }
 
@@ -149,7 +164,9 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
                 return
             } else {
                 cell.idLabel.text = textData.username
-                cell.contentLabel.text = textData.username + textData.content
+                cell.contentLabel.attributedText = NSMutableAttributedString()
+                    .bold(string: "\(textData.username) ", fontSize: 16)
+                    .regular(string: textData.content, fontSize: 16)
                 self.textDataDic[indexPath.row] = textData
             }
         }
@@ -189,7 +206,9 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         // text 재사용 문제 해결
         if let textdata = self.textDataDic[indexPath.row] {
             cell.idLabel.text = textdata.username
-            cell.contentLabel.text = textdata.username + textdata.content
+            cell.contentLabel.attributedText = NSMutableAttributedString()
+                .bold(string: "\(textdata.username) ", fontSize: 16)
+                .regular(string: textdata.content, fontSize: 16)
         }
         
         return cell
@@ -201,6 +220,32 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
             cachedPosition[indexPath.row] = cell.mainCollectionView.contentOffset
             pageOfCell[indexPath.row] = cell.pageControl.currentPage
         }
+    }
+    
+    // 무한 스크롤 구현
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        
+        if offsetY > contentHeight - 100 - scrollView.frame.height
+        {
+            self.tableView.tableFooterView = createSpinnerFooter()
+            if !fetchingMore
+            {
+                beginBatchFetch()
+            }
+        }
+    }
+    
+    func beginBatchFetch() {
+        fetchingMore = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+            self.tableView.tableFooterView = nil
+            self.count += 10
+            self.pageOfCell += [0,0,0,0,0,0,0,0,0,0]
+            self.fetchingMore = false
+            self.tableView.reloadData()
+        })
     }
 
 }
