@@ -17,13 +17,15 @@ class HomeVC: UIViewController {
     var textDataDic = Dictionary<Int, TextData>() // 네트워크 연결한 Text 정보를 저장하는 Dictionary
     var fetchingMore = false // 무한 스크롤 구현 변수
     var count = 10 // 셀의 개수
+    static var i = 0 // 데이터 세팅할 때 필요. static이 아니면 비동기라 뒤죽박죽으로 되서 사용하였습니다.
 
     
-    let network = Network() // 네트워크 연결시 사용
+    let network = Network.network // 네트워크 연결시 사용
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        loadingData()
         setNavBar()
         setTableView()
         setCollectionView()
@@ -130,6 +132,19 @@ class HomeVC: UIViewController {
         }
     }
     
+    // 데이터 세팅
+    func loadingData() {
+        // 텍스트 10개씩 한번에 로드
+        for _ in 0..<10 {
+            self.network.getTextInfo { textData in
+                self.textDataDic[HomeVC.i] = textData
+                HomeVC.i += 1
+                self.tableView.reloadData() // 이걸 안하면, 0,1번 인덱스의 셀이 업데이트 되지 않습니다.
+            }
+        }
+    }
+
+    
 }
 
 extension HomeVC: UITableViewDelegate, UITableViewDataSource {
@@ -159,17 +174,17 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         cell.selectionStyle = .none
         
         // 네트워크 연결하여 idLabel, contentLabel 세팅 및 재사용 문제 방지 세팅
-        network.getTextInfo(index: indexPath.row) { textData in
-            if self.textDataDic[indexPath.row] != nil {
-                return
-            } else {
-                cell.idLabel.text = textData.username
-                cell.contentLabel.attributedText = NSMutableAttributedString()
-                    .bold(string: "\(textData.username) ", fontSize: 16)
-                    .regular(string: textData.content, fontSize: 16)
-                self.textDataDic[indexPath.row] = textData
-            }
-        }
+//        network.getTextInfo { textData in
+//            if self.textDataDic[indexPath.row] != nil {
+//                return
+//            } else {
+//                cell.idLabel.text = textData.username
+//                cell.contentLabel.attributedText = NSMutableAttributedString()
+//                    .bold(string: "\(textData.username ?? "ground_ssu") ", fontSize: 16)
+//                    .regular(string: textData.content ?? "인스타그램 클론코딩 중입니다.", fontSize: 16)
+//                self.textDataDic[indexPath.row] = textData
+//            }
+//        }
         
         // Label 누를 때 실행
         let labelTap = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
@@ -203,13 +218,11 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
             cell.mainCollectionView.contentOffset = offset
         }
         
-        // text 재사용 문제 해결
-        if let textdata = self.textDataDic[indexPath.row] {
-            cell.idLabel.text = textdata.username
-            cell.contentLabel.attributedText = NSMutableAttributedString()
-                .bold(string: "\(textdata.username) ", fontSize: 16)
-                .regular(string: textdata.content, fontSize: 16)
-        }
+        // Text 세팅
+        cell.idLabel.text = textDataDic[indexPath.row]?.username
+        cell.contentLabel.attributedText = NSMutableAttributedString()
+                .bold(string: "\(textDataDic[indexPath.row]?.username ?? "ground_ssu") ", fontSize: 16)
+                .regular(string: textDataDic[indexPath.row]?.content ?? "인스타그램 클론코딩 중입니다.", fontSize: 16)
         
         return cell
 
@@ -243,6 +256,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
             self.tableView.tableFooterView = nil
             self.count += 10
             self.pageOfCell += [0,0,0,0,0,0,0,0,0,0]
+            self.loadingData()
             self.fetchingMore = false
             self.tableView.reloadData()
         })

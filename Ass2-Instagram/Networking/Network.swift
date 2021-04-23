@@ -11,10 +11,12 @@ import SwiftyJSON
 
 class Network {
     
+    static let network = Network()
+    
     let apiKey = "tmh0YFcBOZhgnFcZ0K3mRQCAPe07sQI3"
     let urlString = "https://api.giphy.com/v1/gifs/random"
     
-    func getTextInfo(index: Int, completion: @escaping (TextData) -> Void) {
+    func getTextInfo(completion: @escaping (TextData) -> Void) {
         var tmp = TextData()
         let param: Parameters = ["api_key" : "\(self.apiKey)"]
         
@@ -36,7 +38,7 @@ class Network {
             }
     }
     
-    func getImageInfo(index: Int, completion: @escaping (ImageData) -> Void) {
+    func getImageInfo(completion: @escaping (ImageData) -> Void) {
         var tmp = ImageData()
         let param: Parameters = ["api_key" : "\(self.apiKey)"]
         

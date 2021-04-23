@@ -8,11 +8,5 @@
 import UIKit
 
 struct ImageData: Codable {
-    
-    var imageURL: String
-    
-    init() {
-        imageURL = ""
-    }
-
+    var imageURL: String?
 }

@@ -11,7 +11,7 @@ import SnapKit
 class HomeFeedTableViewCell: UITableViewCell {
     
     var imageDataDic = Dictionary<Int, ImageData>() // 네트워크 연결한 Image 정보를 저장하는 Dictionary
-    let network = Network() // 네트워크 연결시 사용
+    let network = Network.network // 네트워크 연결시 사용
     
     var isTouched: Bool? {
         didSet {
@@ -512,7 +512,7 @@ extension HomeFeedTableViewCell: UICollectionViewDelegate, UICollectionViewDataS
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "pageCell", for: indexPath) as? PageCollectionViewCell else { return UICollectionViewCell() }
         
         // 네트워크 연결하여 instaImgView 세팅
-        network.getImageInfo(index: indexPath.item) { imageData in
+        network.getImageInfo() { imageData in
             if self.imageDataDic[indexPath.row] != nil {
                 return
             } else {

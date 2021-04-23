@@ -8,11 +8,6 @@
 import UIKit
 
 struct TextData: Codable {
-    var username: String
-    var content: String
-    
-    init() {
-        self.username = "ground_ssu"
-        self.content = "인스타그램 클론코딩을 하고 있습니다"
-    }
+    var username: String?
+    var content: String?
 }
