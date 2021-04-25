@@ -7,6 +7,7 @@
 
 import UIKit
 
-struct ImageData: Codable {
+struct ImageData {
     var imageURL: String?
+    var img: UIImage?
 }

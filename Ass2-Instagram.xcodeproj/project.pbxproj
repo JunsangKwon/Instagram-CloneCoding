@@ -10,6 +10,7 @@
 		1C7C9F306A26340CE87D8FAA /* Pods_Ass2_Instagram.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B53ED5587825F0495048D19 /* Pods_Ass2_Instagram.framework */; };
 		2D2AF92B26269E05004E8465 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2AF92A26269E05004E8465 /* UIColorExtension.swift */; };
 		2D2AF92E2626A575004E8465 /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2AF92D2626A575004E8465 /* UIFontExtension.swift */; };
+		2D6692282635771A00710EEA /* ApiData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D6692272635771A00710EEA /* ApiData.swift */; };
 		2D83F926262DD79500404FD1 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D83F925262DD79500404FD1 /* Network.swift */; };
 		2D83F929262E935200404FD1 /* TextData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D83F928262E935200404FD1 /* TextData.swift */; };
 		2D83F92C262E9EBF00404FD1 /* ImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D83F92B262E9EBF00404FD1 /* ImageData.swift */; };
@@ -34,6 +35,7 @@
 /* Begin PBXFileReference section */
 		2D2AF92A26269E05004E8465 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		2D2AF92D2626A575004E8465 /* UIFontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
+		2D6692272635771A00710EEA /* ApiData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiData.swift; sourceTree = "<group>"; };
 		2D83F925262DD79500404FD1 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		2D83F928262E935200404FD1 /* TextData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextData.swift; sourceTree = "<group>"; };
 		2D83F92B262E9EBF00404FD1 /* ImageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageData.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				2D83F925262DD79500404FD1 /* Network.swift */,
 				2D83F928262E935200404FD1 /* TextData.swift */,
 				2D83F92B262E9EBF00404FD1 /* ImageData.swift */,
+				2D6692272635771A00710EEA /* ApiData.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -298,6 +301,7 @@
 				2DAFA2F32614343A006F2822 /* SearchVC.swift in Sources */,
 				2DAFA2F02614342A006F2822 /* HomeVC.swift in Sources */,
 				2D83F929262E935200404FD1 /* TextData.swift in Sources */,
+				2D6692282635771A00710EEA /* ApiData.swift in Sources */,
 				2DAFA2CC26120475006F2822 /* AppDelegate.swift in Sources */,
 				2D83F92C262E9EBF00404FD1 /* ImageData.swift in Sources */,
 				2DCFAA6A261C1D39005A3827 /* PageCollectionViewCell.swift in Sources */,

@@ -27,19 +27,19 @@ class PageCollectionViewCell: UICollectionViewCell {
     }()
     
     // imageURL을 image로 변경
-    func loadImage(_ url: String?) {
-        let downloadQueue = DispatchQueue(__label: url,attr: nil)
-        downloadQueue.async(){
-            let data = NSData(contentsOf: NSURL(string: url!)! as URL)
-            var image: UIImage?
-            if (data != nil){
-                image = UIImage(data: data! as Data)
-            }
-            DispatchQueue.main.async {
-                self.instaImgView.image = image
-            }
-        }
-    }
+//    func loadImage(_ url: String?) {
+//        let downloadQueue = DispatchQueue(__label: url,attr: nil)
+//        downloadQueue.async(){
+//            let data = NSData(contentsOf: NSURL(string: url!)! as URL)
+//            var image: UIImage?
+//            if (data != nil){
+//                image = UIImage(data: data! as Data)
+//            }
+//            DispatchQueue.main.async {
+//                self.instaImgView.image = image
+//            }
+//        }
+//    }
     
     func setConstruct() {
         contentView.addSubview(instaImgView)

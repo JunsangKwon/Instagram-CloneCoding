@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct TextData: Codable {
+struct TextData {
     var username: String?
     var content: String?
 }

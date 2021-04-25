@@ -15,6 +15,8 @@ class HomeVC: UIViewController {
     var cachedPosition = Dictionary<Int,CGPoint>() // 셀이 사라질 때, 마지막 offset을 저장하는 Dictionary
     var pageOfCell: [Int] = [0,0,0,0,0,0,0,0,0,0] // 셀이 사라질 때, 마지막 페이지를 저장하는 배열
     var textDataDic = Dictionary<Int, TextData>() // 네트워크 연결한 Text 정보를 저장하는 Dictionary
+    var imageDataDic = Dictionary<Int, ImageData>() // 네트워크 연결한 Image 정보를 저장하는 Dictionary
+    var apiDataDic = Dictionary<Int, ApiData>() // 네트워크 연결한 Text + Image 정보를 저장하는 Dictionary
     var fetchingMore = false // 무한 스크롤 구현 변수
     var count = 10 // 셀의 개수
     static var i = 0 // 데이터 세팅할 때 필요. static이 아니면 비동기라 뒤죽박죽으로 되서 사용하였습니다.
@@ -134,12 +136,12 @@ class HomeVC: UIViewController {
     
     // 데이터 세팅
     func loadingData() {
-        // 텍스트 10개씩 한번에 로드
+        // 텍스트 이미지 각각 10개씩
         for _ in 0..<10 {
-            self.network.getTextInfo { textData in
-                self.textDataDic[HomeVC.i] = textData
+            self.network.getApiData { apiData in
+                self.apiDataDic[HomeVC.i] = apiData
                 HomeVC.i += 1
-                self.tableView.reloadData() // 이걸 안하면, 0,1번 인덱스의 셀이 업데이트 되지 않습니다.
+                self.tableView.reloadData()
             }
         }
     }
@@ -218,11 +220,16 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
             cell.mainCollectionView.contentOffset = offset
         }
         
-        // Text 세팅
-        cell.idLabel.text = textDataDic[indexPath.row]?.username
-        cell.contentLabel.attributedText = NSMutableAttributedString()
-                .bold(string: "\(textDataDic[indexPath.row]?.username ?? "ground_ssu") ", fontSize: 16)
-                .regular(string: textDataDic[indexPath.row]?.content ?? "인스타그램 클론코딩 중입니다.", fontSize: 16)
+        //API 데이터 세팅
+        if let apidata = apiDataDic[indexPath.row] {
+            cell.idLabel.text = apidata.username
+            cell.contentLabel.attributedText = NSMutableAttributedString()
+                    .bold(string: "\(apidata.username ?? "ground_ssu") ", fontSize: 16)
+                    .regular(string: apidata.content ?? "인스타그램 클론코딩 중입니다.", fontSize: 16)
+
+            cell.tmpImage = apidata.img
+            cell.mainCollectionView.reloadData()
+        }
         
         return cell
 
