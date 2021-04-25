@@ -10,8 +10,7 @@ import SnapKit
 
 class HomeFeedTableViewCell: UITableViewCell {
     
-    let network = Network.network // 네트워크 연결시 사용
-    var tmpImage: UIImage?
+    var receivedImage: UIImage?
     
     var isTouched: Bool? {
         didSet {
@@ -511,20 +510,7 @@ extension HomeFeedTableViewCell: UICollectionViewDelegate, UICollectionViewDataS
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "pageCell", for: indexPath) as? PageCollectionViewCell else { return UICollectionViewCell() }
         
-        // 네트워크 연결하여 instaImgView 세팅
-//        network.getImageInfo() { imageData in
-//            if self.tmpImageDataArray[indexPath.row] != nil {
-//                return
-//            } else {
-//                cell.loadImage(imageData.imageURL)
-//                self.tmpImageDataArray[indexPath.row] = imageData
-//            }
-//        }
-        
-        // 이미지 페이지 넘기면 바뀌는 문제 해결
-//        cell.loadImage(self.tmpImageDataDic[indexPath.row]?.imageURL)
-
-        cell.instaImgView.image = tmpImage
+        cell.instaImgView.image = receivedImage
         
         return cell
     }

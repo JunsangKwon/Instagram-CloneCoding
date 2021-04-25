@@ -8,6 +8,5 @@
 import UIKit
 
 struct ImageData {
-    var imageURL: String?
     var img: UIImage?
 }

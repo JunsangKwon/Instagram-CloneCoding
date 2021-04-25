@@ -10,6 +10,5 @@ import UIKit
 struct ApiData {
     var username: String?
     var content: String?
-    var imageURL: String?
     var img: UIImage?
 }
