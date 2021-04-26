@@ -10,6 +10,18 @@ import SnapKit
 
 class HomeFeedTableViewCell: UITableViewCell {
     
+    var receivedImageDic = Dictionary<Int, UIImage>() // HomeVC로 부터 받은 이미지 정보를 저장하는 Dictionary
+    
+    var isTouched: Bool? {
+        didSet {
+            if isTouched == true {
+                unfoldLabel()
+            } else {
+                foldLabel()
+            }
+        }
+    }
+    
     // Cell 사용 위해서 초기화
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -17,11 +29,11 @@ class HomeFeedTableViewCell: UITableViewCell {
         setCollectionView()
         setHeaderViewConstraint()
         setCollectionViewConstraint()
-        setStackViewConstraint()
         setButtonViewConstraint()
         setDescriptionViewConstraint()
         setCommentViewConstraint()
-        setLabelTap()
+        checkContentLabel()
+        setPageLabel()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -35,7 +47,7 @@ class HomeFeedTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-    
+
     // HeaderView 생성
     private var headerView: UIView = {
         let view = UIView()
@@ -43,7 +55,7 @@ class HomeFeedTableViewCell: UITableViewCell {
     }()
     
     // MainCollectionView 생성
-    private var mainCollectionView: UICollectionView = {
+    var mainCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         layout.scrollDirection = .horizontal
@@ -51,27 +63,15 @@ class HomeFeedTableViewCell: UITableViewCell {
         return cv
     }()
     
-    // 추후에 제대로 설정
     // FooterView : pageControl 생성
-    private var pageControl: UIPageControl = {
+    var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.numberOfPages = 3
-        pageControl.currentPageIndicatorTintColor = UIColor.systemBlue
-        pageControl.pageIndicatorTintColor = UIColor.black
+        pageControl.currentPageIndicatorTintColor = UIColor.currentPageColor
+        pageControl.pageIndicatorTintColor = UIColor.restOfPageColor
         return pageControl
     }()
     
-    // StackView 생성
-    private var stackView: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [])
-        stack.axis = .vertical
-        stack.spacing = 10
-        stack.translatesAutoresizingMaskIntoConstraints = false;
-        stack.alignment = .fill
-        stack.distribution = .fill
-
-        return stack
-    }()
     
     // buttonView 생성
     private var buttonView: UIView = {
@@ -82,7 +82,6 @@ class HomeFeedTableViewCell: UITableViewCell {
     // descriptionView 생성 (더보기버튼 관련 뷰)
     private var descriptionView: UIView = {
         let view = UIView()
-        view.contentMode = .scaleAspectFit
         return view
     }()
     
@@ -100,11 +99,11 @@ class HomeFeedTableViewCell: UITableViewCell {
     }()
     
     // HeaderView : idLabel 생성
-    private let idLabel: UILabel = {
+    let idLabel: UILabel = {
         let label = UILabel()
         label.text = "ground_ssu"
         label.textColor = UIColor.black
-        label.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        label.font = UIFont.idLabelFont
         return label
     }()
     
@@ -113,7 +112,7 @@ class HomeFeedTableViewCell: UITableViewCell {
         let label = UILabel()
         label.text = "SSU, Seoul"
         label.textColor = UIColor.black
-        label.font = UIFont.systemFont(ofSize: 13, weight: .light)
+        label.font = UIFont.localLabelFont
         return label
     }()
     
@@ -135,8 +134,8 @@ class HomeFeedTableViewCell: UITableViewCell {
     // ImageView : pageLabel 생성
     private let pageLabel: UILabel = {
         let label = UILabel()
-        label.text = "1/3"
-        label.textColor = UIColor.white
+        label.textColor = UIColor.pageLabelColor
+        label.font = UIFont.pageLabelFont
         label.adjustsFontSizeToFitWidth = true
         return label
     }()
@@ -185,22 +184,31 @@ class HomeFeedTableViewCell: UITableViewCell {
         let label = UILabel()
         label.textColor = UIColor.black
         label.attributedText = NSMutableAttributedString()
-            .medium(string: "Juuunnns_", fontSize: 16)
-            .light(string: "님 외 ", fontSize: 16)
-            .medium(string: "100명", fontSize: 16)
-            .light(string: "이 좋아합니다", fontSize: 16)
+            .bold(string: "Juuunnns_", fontSize: 16)
+            .regular(string: "님 외 ", fontSize: 16)
+            .bold(string: "100명", fontSize: 16)
+            .regular(string: "이 좋아합니다", fontSize: 16)
         return label
     }()
     
     // DescriptionView : contentLabel 생성
-    private let contentLabel: UILabel = {
+    let contentLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.attributedText = NSMutableAttributedString()
-            .medium(string: "ground_yourssu ", fontSize: 16)
-            .light(string: "인스타그램 클론코딩을 하고 있습니다 블라블라 블라블랍 블라블라 블라블라 블라블랍 블라블라블라블라 블라블랍 블라블라 블라블라 블라블랍 블라블라 블라블라 블라블랍 블라블라 ", fontSize: 16)
+            .bold(string: "ground_yourssu ", fontSize: 16)
+            .regular(string: "인스타그램 클론코딩을 하고 있습니다 블라블라 블라블랍 블라블라 블라블라 블라블랍 블라블라블라블라 블라블랍 블라블라 블라블라 블라블랍 블라블라 블라블라 블라블랍 블라블라 ", fontSize: 16)
         label.textColor = UIColor.black
+        return label
+    }()
+    
+    // DescriptionView : moreBtn 생성
+    let moreBtn: UILabel = {
+        let label = UILabel()
+        label.text = "...더보기"
+        label.textColor = UIColor.darkGray
+        label.font = UIFont.moreBtnFont
         return label
     }()
     
@@ -215,6 +223,8 @@ class HomeFeedTableViewCell: UITableViewCell {
     private let commentTextField: UITextField = {
         let textfield = UITextField()
         textfield.placeholder = "댓글 달기..."
+        textfield.font = UIFont.commentTextFieldFont
+
         return textfield
     }()
     
@@ -222,6 +232,7 @@ class HomeFeedTableViewCell: UITableViewCell {
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.text = "2시간전"
+        label.font = UIFont.timeLabelFont
         label.textColor = UIColor.gray
         return label
     }()
@@ -232,10 +243,14 @@ class HomeFeedTableViewCell: UITableViewCell {
     
     private func setStructure() {
         
-        // 크게 세가지 View로 나누어 contentView에 추가
+        // 크게 6가지 View로 나누어 contentView에 추가
         contentView.addSubview(headerView)
         contentView.addSubview(mainCollectionView)
-        contentView.addSubview(stackView)
+        contentView.addSubview(rectangleImg)
+        rectangleImg.addSubview(pageLabel)
+        contentView.addSubview(buttonView)
+        contentView.addSubview(descriptionView)
+        contentView.addSubview(commentView)
         
         //headerView 구성요소 추가
         headerView.addSubview(profileImg)
@@ -254,16 +269,12 @@ class HomeFeedTableViewCell: UITableViewCell {
         
         //descriptionView 구성요소 추가
         descriptionView.addSubview(contentLabel)
+        descriptionView.addSubview(moreBtn)
         
         //commentView 구성요소 추가
         commentView.addSubview(profileImg2)
         commentView.addSubview(commentTextField)
         commentView.addSubview(timeLabel)
-        
-        //stackView 구성요소 추가
-        stackView.addArrangedSubview(buttonView)
-        stackView.addArrangedSubview(descriptionView)
-        stackView.addArrangedSubview(commentView)
    
     }
     
@@ -278,35 +289,48 @@ class HomeFeedTableViewCell: UITableViewCell {
         mainCollectionView.showsHorizontalScrollIndicator = false
         mainCollectionView.isPagingEnabled = true
     }
-    
-    // Label에 Gesture 추가
-    func setLabelTap() {
-        let labelTap = UITapGestureRecognizer(target: self, action: #selector(self.labelTapped(_:)))
-        self.contentLabel.isUserInteractionEnabled = true
-        self.contentLabel.addGestureRecognizer(labelTap)
-    }
-    
-    // Label 누를 때 실행
-    @objc func labelTapped(_ sender: UITapGestureRecognizer) {
-        
-        descriptionView.snp.makeConstraints { make in
-            make.top.equalTo(buttonView.snp.bottom).offset(5)
-            make.leading.equalToSuperview().offset(14)
+  
+    func unfoldLabel() {
+        contentLabel.numberOfLines = 0
+        contentLabel.snp.updateConstraints { make in
             make.trailing.equalToSuperview().offset(-14)
         }
-        
-        contentLabel.numberOfLines = 0
-        contentLabel.lineBreakMode = .byWordWrapping
-        contentLabel.snp.makeConstraints { make in
-            make.top.leading.trailing.bottom.equalToSuperview()
+        moreBtn.removeFromSuperview()
+    }
+    
+    func foldLabel() {
+        contentLabel.numberOfLines = 1
+        descriptionView.addSubview(moreBtn)
+        contentLabel.snp.remakeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.leading.equalToSuperview().offset(14)
+            make.trailing.equalToSuperview().offset(-60)
         }
+        
+        moreBtn.snp.remakeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-10)
+        }
+    }
+    
+    func checkContentLabel() {
+        if(!contentLabel.isTruncated) {
+            moreBtn.isHidden = true
+        } else {
+            moreBtn.isHidden = false
+        }
+    }
+    
+    func setPageLabel() {
+        pageLabel.text = "\(pageControl.currentPage + 1)/\(pageControl.numberOfPages)"
     }
 
     // SnapKit 사용하여 HeaderView 의 AutoLayout
     private func setHeaderViewConstraint() {
         
         headerView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
+            make.top.equalTo(contentView.snp.top)
+            make.leading.trailing.equalToSuperview()
             make.height.equalTo(54)
         }
         
@@ -348,26 +372,18 @@ class HomeFeedTableViewCell: UITableViewCell {
             make.height.equalTo(400)
         }
         
-//        rectangleImg.snp.makeConstraints { make in
-//            make.top.equalTo(headerView.snp.bottom).offset(14)
-//            make.trailing.equalToSuperview().offset(-14)
-//            make.width.equalTo(34)
-//            make.height.equalTo(26)
-//        }
-//
-//        pageLabel.snp.makeConstraints { make in
-//            make.top.equalTo(rectangleImg.snp.top).offset(6)
-//            make.bottom.equalTo(rectangleImg.snp.bottom).offset(-6)
-//            make.leading.equalTo(rectangleImg.snp.leading).offset(8)
-//            make.trailing.equalTo(rectangleImg.snp.trailing).offset(-8)
-//        }
-    }
-    
-    // StackView AutoLayout
-    private func setStackViewConstraint() {
-        stackView.snp.makeConstraints { make in
-            make.top.equalTo(mainCollectionView.snp.bottom)
-            make.leading.trailing.bottom.equalToSuperview()
+        rectangleImg.snp.makeConstraints { make in
+            make.top.equalTo(headerView.snp.bottom).offset(14)
+            make.trailing.equalToSuperview().offset(-14)
+            make.width.equalTo(34)
+            make.height.equalTo(26)
+        }
+
+        pageLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(6)
+            make.bottom.equalToSuperview().offset(-6)
+            make.leading.equalToSuperview().offset(8)
+            make.trailing.equalToSuperview().offset(-8)
         }
     }
 
@@ -376,7 +392,7 @@ class HomeFeedTableViewCell: UITableViewCell {
     private func setButtonViewConstraint() {
         
         buttonView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+            make.top.equalTo(mainCollectionView.snp.bottom)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(70)
         }
@@ -428,20 +444,21 @@ class HomeFeedTableViewCell: UITableViewCell {
         
         descriptionView.snp.makeConstraints { make in
             make.top.equalTo(buttonView.snp.bottom).offset(5)
-            make.leading.equalToSuperview().offset(14)
-            make.trailing.equalToSuperview().offset(-14)
-            make.height.equalTo(50)
+            make.leading.trailing.equalToSuperview()
+            make.height.greaterThanOrEqualTo(0)
         }
         
         contentLabel.snp.makeConstraints { make in
-            make.top.leading.equalToSuperview()
+            make.top.bottom.equalToSuperview()
+            make.leading.equalToSuperview().offset(14)
+            make.trailing.equalToSuperview().offset(-60)
         }
         
-//        moreBtn.snp.makeConstraints { make in
-//            make.top.equalTo(descriptionView).offset(2.8)
-//            make.trailing.equalToSuperview().offset(-30)
-//            make.leading.equalTo(contentLabel.snp.trailing)
-//        }
+        moreBtn.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-10)
+        }
+        
     }
     
     // CommentView 의 AutoLayout
@@ -449,7 +466,8 @@ class HomeFeedTableViewCell: UITableViewCell {
         
         commentView.snp.makeConstraints { make in
             make.top.equalTo(descriptionView.snp.bottom)
-            make.leading.trailing.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(contentView.snp.bottom)
             make.height.equalTo(70)
         }
         
@@ -477,30 +495,11 @@ class HomeFeedTableViewCell: UITableViewCell {
     }
 }
 
-// 글자 설정
-extension NSMutableAttributedString {
-
-    func medium(string: String, fontSize: CGFloat) -> NSMutableAttributedString {
-        let font = UIFont.systemFont(ofSize: fontSize, weight: .medium)
-        let attributes: [NSAttributedString.Key: Any] = [.font: font]
-        self.append(NSAttributedString(string: string, attributes: attributes))
-        return self
-    }
-
-    func light(string: String, fontSize: CGFloat) -> NSMutableAttributedString {
-        let font = UIFont.systemFont(ofSize: fontSize, weight: .light)
-        let attributes: [NSAttributedString.Key: Any] = [.font: font]
-        self.append(NSAttributedString(string: string, attributes: attributes))
-        return self
-    }
-}
-
 // TableViewCell 안의 CollectionView 설정
 extension HomeFeedTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width: CGFloat = collectionView.bounds.width
-        return CGSize(width: width, height: width)
+        return CGSize(width: collectionView.frame.width , height: collectionView.frame.height - (collectionView.safeAreaInsets.top + collectionView.safeAreaInsets.bottom))
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -510,6 +509,10 @@ extension HomeFeedTableViewCell: UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "pageCell", for: indexPath) as? PageCollectionViewCell else { return UICollectionViewCell() }
+                
+        if receivedImageDic[0] != nil { // receivedImageDic에 값이 들어갔다면 실행
+            cell.instaImgView.image = receivedImageDic[indexPath.row]
+        }
         
         return cell
     }
@@ -518,7 +521,25 @@ extension HomeFeedTableViewCell: UICollectionViewDelegate, UICollectionViewDataS
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let page = Int(targetContentOffset.pointee.x / self.frame.width)
         self.pageControl.currentPage = page
+        self.setPageLabel()
       }
     
-    
+}
+
+extension UILabel {
+
+    var isTruncated: Bool {
+
+        guard let labelText = text else {
+            return false
+        }
+
+        let labelTextSize = (labelText as NSString).boundingRect(
+            with: CGSize(width: frame.size.width, height: .greatestFiniteMagnitude),
+            options: .usesLineFragmentOrigin,
+            attributes: [.font: font!],
+            context: nil).size
+        
+        return labelTextSize.width > 338
+    }
 }
