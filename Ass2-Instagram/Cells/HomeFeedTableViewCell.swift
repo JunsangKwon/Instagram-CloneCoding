@@ -10,7 +10,7 @@ import SnapKit
 
 class HomeFeedTableViewCell: UITableViewCell {
     
-    var receivedImage: UIImage?
+    var receivedImageDic = Dictionary<Int, UIImage>() // HomeVC로 부터 받은 이미지 정보를 저장하는 Dictionary
     
     var isTouched: Bool? {
         didSet {
@@ -509,8 +509,10 @@ extension HomeFeedTableViewCell: UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "pageCell", for: indexPath) as? PageCollectionViewCell else { return UICollectionViewCell() }
-        
-        cell.instaImgView.image = receivedImage
+                
+        if receivedImageDic[0] != nil { // receivedImageDic에 값이 들어갔다면 실행
+            cell.instaImgView.image = receivedImageDic[indexPath.row]
+        }
         
         return cell
     }

@@ -15,12 +15,13 @@ class HomeVC: UIViewController {
     var cachedPosition = Dictionary<Int,CGPoint>() // 셀이 사라질 때, 마지막 offset을 저장하는 Dictionary
     var pageOfCell: [Int] = [0,0,0,0,0,0,0,0,0,0] // 셀이 사라질 때, 마지막 페이지를 저장하는 배열
     var textDataDic = Dictionary<Int, TextData>() // 네트워크 연결한 Text 정보를 저장하는 Dictionary
-    var imageDataDic = Dictionary<Int, ImageData>() // 네트워크 연결한 Image 정보를 저장하는 Array
+    var imageDataDic = Dictionary<Int, UIImage>() // 네트워크 연결한 Image 정보를 저장하는 Array
     var apiDataDic = Dictionary<Int, ApiData>() // 네트워크 연결한 Text + Image 정보를 저장하는 Dictionary
     var fetchingMore = false // 무한 스크롤 구현 변수
-    let footerViewHeight = 100 // 테이블 뷰의 FooterView의 높이
+    let footerViewHeight: CGFloat = 100 // 테이블 뷰의 FooterView의 높이
     var numOfCells = 10 // 셀의 개수
-    var loadIndex = 0 // 데이터 로드 시 사용되는 인덱스 변수
+    var textLoadIndex = 0 // Text 데이터 로드 시 사용되는 인덱스 변수
+    var imageLoadIndex = 0 // Image 데이터 로드 시 사용되는 인덱스 변수
     
     let network = Network.shared // 네트워크 연결시 사용
 
@@ -36,7 +37,7 @@ class HomeVC: UIViewController {
     
     // 스피너 생성
     private func createSpinnerFooter() -> UIView {
-            let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: CGFloat(footerViewHeight)))
+            let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: footerViewHeight))
             
             let spinner = UIActivityIndicatorView()
             spinner.center = footerView.center
@@ -139,13 +140,20 @@ class HomeVC: UIViewController {
         // 텍스트 이미지 각각 10개씩
         DispatchQueue.main.async {
             for _ in 0..<10 {
-                self.network.getApiData { apiData in
-                    self.apiDataDic[self.loadIndex] = apiData
-                    print(self.loadIndex)
+                self.network.getTextData { textData in
+                    self.textDataDic[self.textLoadIndex] = textData
                     self.tableView.reloadData()
-                    self.loadIndex += 1
+                    self.textLoadIndex += 1
                 }
             }
+            
+            for _ in 0..<30 {
+                self.network.getImageData { imageData in
+                    self.imageDataDic[self.imageLoadIndex] = imageData
+                    self.imageLoadIndex += 1
+                }
+            }
+            self.tableView.reloadData()
         }
     }
 }
@@ -206,14 +214,20 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
             cell.mainCollectionView.contentOffset = offset
         }
         
-        //API 데이터 세팅
-        if let apidata = apiDataDic[indexPath.row] {
-            cell.idLabel.text = apidata.username
+        // 텍스트 데이터 세팅
+        if let textdata = textDataDic[indexPath.row] {
+            cell.idLabel.text = textdata.username
             cell.contentLabel.attributedText = NSMutableAttributedString()
-                    .bold(string: "\(apidata.username ?? "ground_ssu") ", fontSize: 16)
-                    .regular(string: apidata.content ?? "인스타그램 클론코딩 중입니다.", fontSize: 16)
-
-            cell.receivedImage = apidata.img
+                    .bold(string: "\(textdata.username ?? "ground_ssu") ", fontSize: 16)
+                    .regular(string: textdata.content ?? "인스타그램 클론코딩 중입니다.", fontSize: 16)
+        }
+        
+        // 이미지를 30개 저장한 후, 불러올 때 현재의 index 값의 3배를 한 곳에서 부터 3개의 이미지를 불러와서 receivedImageDic에 저장시킵니다.
+        if let imagedata = imageDataDic[indexPath.row * 3] {
+            cell.receivedImageDic.removeAll()
+            cell.receivedImageDic[0] = imagedata
+            cell.receivedImageDic[1] = imageDataDic[(indexPath.row * 3)+1]
+            cell.receivedImageDic[2] = imageDataDic[(indexPath.row * 3)+2]
             cell.mainCollectionView.reloadData()
         }
         
@@ -233,7 +247,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         
-        if offsetY > contentHeight - CGFloat(footerViewHeight) - scrollView.frame.height
+        if offsetY > contentHeight - footerViewHeight - scrollView.frame.height
         {
             self.tableView.tableFooterView = createSpinnerFooter()
             if !fetchingMore
